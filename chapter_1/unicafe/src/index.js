@@ -1,6 +1,13 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
+const Button = (props) => (
+    <button onClick={props.handleClick}>
+      {props.text}
+    </button>
+  )
+  
+
 const App = () => {
   // tallenna napit omaan tilaansa
   const [good, setGood] = useState(0)
@@ -9,7 +16,9 @@ const App = () => {
 
   return (
     <div>
-      code here
+      <Button handleClick={() => {} } text="Hyvä" />
+      <Button handleClick={() => {} } text="Neutraali" />
+      <Button handleClick={() => {}} text="Huono" />
     </div>
   )
 }
