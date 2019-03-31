@@ -44,6 +44,10 @@ const App = () => {
       <Button handleClick={() => handleNeutral(neutral+1)} text="Neutraali" />
       <Button handleClick={() => handleBad(bad+1)} text="Huono" />
       <History good={good} neutral={neutral} bad={bad} />
+      
+      <p>Yhteensä: {good+neutral+bad}</p>
+      <p>Keskiarvo: {(good*1+bad*-1)/(good+neutral+bad)}</p>
+      <p>Positiivisia: {good/(good+neutral+bad)} %</p>     
     </div>
   )
 }
