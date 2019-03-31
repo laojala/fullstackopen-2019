@@ -18,6 +18,23 @@ const Button = (props) => (
     )
   }
 
+  const Statistics = (props) => {
+
+    let good = props.good
+    let neutral = props.neutral
+    let bad = props.bad
+
+    return (
+      <div>
+        <p>Yhteensä: {good+neutral+bad}</p>
+        <p>Keskiarvo: {(good-bad)/(good+neutral+bad)}</p>
+        <p>Positiivisia: {good/(good+neutral+bad)} %</p>
+       </div>
+      
+    )
+    
+  }
+
 const App = () => {
   // tallenna napit omaan tilaansa
   const [good, setGood] = useState(0)
@@ -35,6 +52,7 @@ const App = () => {
   const handleBad = newValue => {
     setBad(newValue)
   }
+  
 
   return (
     <div>
@@ -44,10 +62,7 @@ const App = () => {
       <Button handleClick={() => handleNeutral(neutral+1)} text="Neutraali" />
       <Button handleClick={() => handleBad(bad+1)} text="Huono" />
       <History good={good} neutral={neutral} bad={bad} />
-      
-      <p>Yhteensä: {good+neutral+bad}</p>
-      <p>Keskiarvo: {(good*1+bad*-1)/(good+neutral+bad)}</p>
-      <p>Positiivisia: {good/(good+neutral+bad)} %</p>     
+      <Statistics good={good} neutral={neutral} bad={bad} />    
     </div>
   )
 }
