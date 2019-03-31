@@ -20,9 +20,19 @@ const Button = (props) => (
 
   const Statistics = (props) => {
 
+    console.log(props)
+
     let good = props.good
     let neutral = props.neutral
     let bad = props.bad
+
+    if (good === 0 & neutral === 0 & bad === 0 ) {
+      return (
+        <div>
+          sovellusta käytetään nappeja painelemalla
+        </div>
+      )
+    }
 
     return (
       <div>
