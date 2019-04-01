@@ -8,12 +8,22 @@ const Button = (props) => (
   )
 
 const Label = ({selected,votes}) => {
-
     return (
         <>
         <div>{anecdotes[selected]}</div>
         <div>Has {votes[selected]} votes</div>
         </>
+    )
+}
+
+const Statistics = (props) => {
+    let i = props.votes.indexOf(Math.max(...props.votes));
+    return (
+        <div>
+        <h1>Anecdote with most votes</h1>
+        <div>{anecdotes[i]}</div>
+        <div>Has {props.votes[i]} votes</div>
+        </div>
     )
 }
 
@@ -38,6 +48,7 @@ const App = (props) => {
       <Button handleClick={() => giveVote(selected)} text="Vote" />
       <Button handleClick={() => setRandom(anecdotes)} text="Next anecdote" />
       </p>
+      <Statistics votes={votes} />
     </div>
   )
 }
