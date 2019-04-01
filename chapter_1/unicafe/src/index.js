@@ -9,9 +9,10 @@ const Button = (props) => (
 
   const Statistic = (props) => {
     return (
-      <div>
-        {props.text} {props.value}
-      </div>
+      <>
+        <td>{props.text}</td>
+        <td>{props.value}</td>
+      </>
     )
   }
   
@@ -31,12 +32,28 @@ const Button = (props) => (
     return (
       <div>
         <h1>Statistiikka</h1>
-        <Statistic text="hyvä" value ={good} />
-        <Statistic text="neutraali" value ={neutral} />
-        <Statistic text="huono" value ={bad} />
-        <p>Yhteensä: {good+neutral+bad}</p>
-        <p>Keskiarvo: {(good-bad)/(good+neutral+bad)}</p>
-        <p>Positiivisia: {good/(good+neutral+bad)} %</p>
+        <table>
+        <tbody>
+          <tr>
+            <Statistic text="hyvä" value ={good} />
+          </tr>
+          <tr>
+            <Statistic text="neutraali" value ={neutral} />
+          </tr>
+          <tr>
+            <Statistic text="huono" value ={bad} />
+          </tr>
+          <tr>
+            <td>Yhteensä: </td><td>{good+neutral+bad}</td>
+          </tr>
+          <tr>
+            <td>Keskiarvo: </td><td>{(good-bad)/(good+neutral+bad)}</td>
+          </tr>
+          <tr>
+            <td>Positiivisia: </td><td>{good/(good+neutral+bad)} %</td>
+          </tr>
+        </tbody>
+        </table>
        </div>
       
     )
