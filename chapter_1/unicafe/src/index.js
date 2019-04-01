@@ -7,21 +7,15 @@ const Button = (props) => (
     </button>
   )
 
-  const History = (props) => {
+  const Statistic = (props) => {
     return (
       <div>
-        <h1>Statistiikka</h1>
-        <p>Good: {props.good}</p>
-        <p>Neutral: {props.neutral}</p>
-        <p>Bad: {props.bad}</p>
+        {props.text} {props.value}
       </div>
     )
   }
-
+  
   const Statistics = (props) => {
-
-    console.log(props)
-
     let good = props.good
     let neutral = props.neutral
     let bad = props.bad
@@ -36,6 +30,10 @@ const Button = (props) => (
 
     return (
       <div>
+        <h1>Statistiikka</h1>
+        <Statistic text="hyvä" value ={good} />
+        <Statistic text="neutraali" value ={neutral} />
+        <Statistic text="huono" value ={bad} />
         <p>Yhteensä: {good+neutral+bad}</p>
         <p>Keskiarvo: {(good-bad)/(good+neutral+bad)}</p>
         <p>Positiivisia: {good/(good+neutral+bad)} %</p>
@@ -67,11 +65,9 @@ const App = () => {
   return (
     <div>
       <h1>Anna palautetta</h1>
-
       <Button handleClick={() => handleGood(good+1)} text="hyvä" />
       <Button handleClick={() => handleNeutral(neutral+1)} text="Neutraali" />
       <Button handleClick={() => handleBad(bad+1)} text="Huono" />
-      <History good={good} neutral={neutral} bad={bad} />
       <Statistics good={good} neutral={neutral} bad={bad} />    
     </div>
   )
