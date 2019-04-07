@@ -40,21 +40,21 @@ const Header = (props) => {
 }
 
 const Content = ({parts}) => {
-  return (
-    <>
-    <p>{parts[0].name} {parts[0].exercises}</p>
-    <p>{parts[1].name} {parts[1].exercises}</p>
-    <p>{parts[2].name} {parts[2].exercises}</p>
-    </>
-  )
+  return <>{parts.map(p => 
+    <div key={p.name}>
+    {p.name}: {p.exercises}</div>)}
+  </>
+
 }
 
 const Total = ({parts}) => {
-  return (
-    <>
-    <p>{parts[0].exercises + parts[1].exercises + parts[2].exercises}</p>
-    </>
-  )
+  console.log(parts)
+
+  const Total = parts.reduce((sum, part) => sum + part.exercises, 0)
+
+  return <><div>Yhteensä: {Total}</div>
+  </>
+  
 }
 
 
