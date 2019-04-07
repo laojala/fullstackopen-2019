@@ -5,7 +5,7 @@ const App = ({course}) => {
 
   return (
     <div>
-      <Course course={course} />
+      {Course(course)}
     </div>
   )
 }
