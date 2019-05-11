@@ -1,0 +1,24 @@
+{
+  "persons": [
+    {
+      "name": "Meemee O'Brian",
+      "number": "040-123456",
+      "id": 1
+    },
+    {
+      "name": "Äksy O'Brian",
+      "number": "040-123456",
+      "id": 2
+    },
+    {
+      "name": "Seke Äksyläinen",
+      "number": "040-123456",
+      "id": 3
+    },
+    {
+      "name": "Miima Salonen",
+      "number": "040-123456",
+      "id": 4
+    }
+  ]
+}
