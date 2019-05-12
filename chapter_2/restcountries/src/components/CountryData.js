@@ -1,7 +1,7 @@
 import React from 'react'
 import Weather from './Weather'
 
-const CountryData = (country) => {
+const CountryData = ({country}) => {
 
         if (country.length === 0)
             return <></>

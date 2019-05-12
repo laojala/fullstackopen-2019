@@ -20,7 +20,7 @@ const CountryList = (countries, currentFilter, setFilterUsingButton) => {
         )
     
     else { //list lenght === 1, display details of the country
-        return <>{CountryData(filteredList[0])}</>
+        return <div><CountryData country={filteredList[0]}/></div>
     }
     
 }
