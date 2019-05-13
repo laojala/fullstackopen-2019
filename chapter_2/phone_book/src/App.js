@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import personsService from './services/persons'
 import Filter from './components/Filter'
 import NewPerson from './components/NewPerson'
 import PhoneBook from './components/PhoneBook'
@@ -11,14 +11,13 @@ const App = () => {
   const [ newFilter, setNewFilter] = useState('')
 
   useEffect(() => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
+    personsService
+      .getAll()
       .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
+        setPersons(response)
       })
   }, [])
+
 
 
   const addEntry = (event) => {
@@ -28,13 +27,45 @@ const App = () => {
       number: newNumber
     }
     if (persons.some(e => e.name === newName)) {
-      alert(`${newName} already added`)
+
+      let personId = persons.find(item => item.name === newName)
+    
+      let updatedEntry = Object.assign(personId, entryObject)
+
+      if (window.confirm(`Do you want to update ${newName} with number ${newNumber}?`)) {
+        personsService
+        .update(personId.id, entryObject)
+          .then( () => {
+            setPersons(persons.map(item => (item.name === newName) ? updatedEntry : item))
+            setNewName('')
+            setNewNumber('')
+          })  
+      }
     }
+    
     else {
-      setPersons(persons.concat(entryObject))
+        personsService
+        .create(entryObject)
+          .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+          setNewName('')
+          setNewNumber('')
+        })
+      }
+      
+  }
+
+  const removeEntry = (person) => {
+    if (window.confirm(`Remove ${person.name}?`)) { 
+      personsService
+      .remove(person.id)
+        .then( () => {
+          setPersons(persons.filter(item => item.id !== person.id ))
+        })
+      .catch(error => {
+          console.log("id already removed (or other problem")
+        })
     }
-    setNewName('')
-    setNewNumber('')
   }
 
   const handleNewName = (event) => {
@@ -56,7 +87,7 @@ const App = () => {
       <h2>Lisää uusi</h2>
         {NewPerson(addEntry, newName, handleNewName, newNumber, handleNewNumber)}
       <h2>Numerot</h2>
-        {PhoneBook(persons, newFilter)}
+        {PhoneBook(persons, newFilter, removeEntry)}
     </div>
   )
 
