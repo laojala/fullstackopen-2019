@@ -10,7 +10,8 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ newFilter, setNewFilter] = useState('')
-  const [ successMessage, setSuccessMessage] = useState(null)
+  const [ notification, setNotification] = useState(null)
+  const [ success, setSuccess ] = useState(null)
 
   useEffect(() => {
     personsService
@@ -42,7 +43,12 @@ const App = () => {
             setNewName('')
             setNewNumber('')
             showMessage(`Käyttäjän ${newName} puhelinnumero päivitetty`)
-          })  
+          })
+          .catch(error => {
+            showMessage(`Päivitys epäonnistui. Käyttäjä ${newName} on jo poistettu puhelinluettelosta.`, false)
+            setPersons(persons.filter(n => n.name !== newName))
+          })
+           
       }
     }
     
@@ -68,7 +74,8 @@ const App = () => {
           showMessage(`Käyttäjä ${person.name} on poistettu puhelinluettelosta`)
         })
       .catch(error => {
-          console.log("id already removed (or other problem")
+          showMessage(`Poisto epäonnistui. Käyttäjä ${person.name} on jo poistettu puhelinluettelosta.`, false)
+          console.log("id already removed (or other problem)")
         })
     }
   }
@@ -85,18 +92,20 @@ const App = () => {
     setNewFilter(event.target.value)
   }
 
-  const showMessage = (message) => {
-    setSuccessMessage(message)
+  const showMessage = (message, successNotification=true) => {
+    setSuccess(successNotification)
+    setNotification(message)
     
     setTimeout(() => {
-      setSuccessMessage(null)
+      setSuccess(null)
+      setNotification(null)
     }, 5000)
   }
 
   return (
     <div>
       <h1>Puhelinluettelo</h1>
-      <Notification  message={successMessage}/>
+      <div>{Notification(notification, success)}</div>
      {Filter(newFilter, filterNames)}
       <h2>Lisää uusi</h2>
         {NewPerson(addEntry, newName, handleNewName, newNumber, handleNewNumber)}
