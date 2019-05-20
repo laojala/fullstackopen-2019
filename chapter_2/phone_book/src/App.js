@@ -11,7 +11,6 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ newFilter, setNewFilter] = useState('')
   const [ notification, setNotification] = useState(null)
-  const [ success, setSuccess ] = useState(null)
 
   useEffect(() => {
     personsService
@@ -93,11 +92,11 @@ const App = () => {
   }
 
   const showMessage = (message, successNotification=true) => {
-    setSuccess(successNotification)
+    setNotification(successNotification)
     setNotification(message)
     
     setTimeout(() => {
-      setSuccess(null)
+      setNotification(null)
       setNotification(null)
     }, 5000)
   }
@@ -105,7 +104,7 @@ const App = () => {
   return (
     <div>
       <h1>Puhelinluettelo</h1>
-      <div>{Notification(notification, success)}</div>
+      <div>{Notification(notification, notification)}</div>
      {Filter(newFilter, filterNames)}
       <h2>Lisää uusi</h2>
         {NewPerson(addEntry, newName, handleNewName, newNumber, handleNewNumber)}
