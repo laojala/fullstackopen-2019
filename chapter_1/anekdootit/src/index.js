@@ -29,7 +29,7 @@ const Statistics = (votes, dataArray) => {
 
 const App = (props) => {
 
-  const dataLenght = anecdotes.length
+  const dataLenght = props.anecdotes.length
 
   const [selected, setSelected] = useState(0)
   const [votes, setVote] = useState(Array(dataLenght).fill(0))
