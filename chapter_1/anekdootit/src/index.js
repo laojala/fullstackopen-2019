@@ -30,12 +30,11 @@ const Statistics = (votes) => {
 const App = (props) => {
 
   const dataLenght = anecdotes.length
-  console.log(dataLenght)
 
   const [selected, setSelected] = useState(0)
   const [votes, setVote] = useState(Array(dataLenght).fill(0))
 
-  const setRandom = (props) => {
+  const setRandom = (anecdotes) => {
     setSelected(Math.floor(Math.random() * anecdotes.length))
   }
 
