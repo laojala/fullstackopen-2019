@@ -11,14 +11,21 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ newFilter, setNewFilter] = useState('')
   const [ notification, setNotification] = useState(null)
+  const [ success, setSuccess] = useState(null)
 
   useEffect(() => {
+    getPersons()
+  }, [])
+
+
+  const getPersons = () => {
     personsService
       .getAll()
       .then(response => {
         setPersons(response)
       })
-  }, [])
+      .catch(error => showMessage("Tietojen haku epäonnistui"), false)
+  }
 
 
 
@@ -28,6 +35,7 @@ const App = () => {
       name: newName,
       number: newNumber
     }
+
     if (persons.some(e => e.name === newName)) {
 
       let personId = persons.find(item => item.name === newName)
@@ -51,17 +59,32 @@ const App = () => {
       }
     }
     
+
     else {
-        personsService
-        .create(entryObject)
-          .then(returnedPerson => {
-          setPersons(persons.concat(returnedPerson))
-          setNewName('')
-          setNewNumber('')
-          showMessage(`Käyttäjä ${newName} on lisätty puhelinluetteloon`)
-        })
+
+      if (persons.some(e => e.number === newNumber)){
+        showMessage(`Numero ${newNumber} on jo puhelinluettelossa.`, false)
+      }  
+      else {
+
+        if (newName === "" || newNumber === "") {
+          showMessage(`Nimi ja numero eivät saa olla tyhjiä`, false)
+        }
+        else {
+          personsService
+          .create(entryObject)
+            .then(returnedPerson => {
+              setPersons(persons.concat(returnedPerson))
+              setNewName('')
+              setNewNumber('')
+              showMessage(`Käyttäjä ${newName} on lisätty puhelinluetteloon`)
+          })
+            .catch(error => {showMessage(`Käyttäjän ${newName} lisäys luetteloon epäonnistui`, false)}  )
+            getPersons()
+        }
       }
-      
+    }
+     
   }
 
   const removeEntry = (person) => {
@@ -75,6 +98,7 @@ const App = () => {
       .catch(error => {
           showMessage(`Poisto epäonnistui. Käyttäjä ${person.name} on jo poistettu puhelinluettelosta.`, false)
           console.log("id already removed (or other problem)")
+          getPersons()
         })
     }
   }
@@ -92,19 +116,19 @@ const App = () => {
   }
 
   const showMessage = (message, successNotification=true) => {
-    setNotification(successNotification)
     setNotification(message)
+    setSuccess(successNotification)
     
     setTimeout(() => {
       setNotification(null)
-      setNotification(null)
+      setSuccess(null)
     }, 5000)
   }
 
   return (
     <div>
       <h1>Puhelinluettelo</h1>
-      <div>{Notification(notification, notification)}</div>
+      <div>{Notification(notification, success)}</div>
      {Filter(newFilter, filterNames)}
       <h2>Lisää uusi</h2>
         {NewPerson(addEntry, newName, handleNewName, newNumber, handleNewNumber)}
