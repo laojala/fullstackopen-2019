@@ -16,20 +16,24 @@ const Label = ({selected,votes}) => {
     )
 }
 
-const Statistics = (props) => {
-    let i = props.votes.indexOf(Math.max(...props.votes));
+const Statistics = (votes) => {
+    let i = votes.indexOf(Math.max(...votes));
     return (
         <div>
         <h1>Anecdote with most votes</h1>
         <div>{anecdotes[i]}</div>
-        <div>Has {props.votes[i]} votes</div>
+        <div>Has {votes[i]} votes</div>
         </div>
     )
 }
 
 const App = (props) => {
+
+  const dataLenght = anecdotes.length
+  console.log(dataLenght)
+
   const [selected, setSelected] = useState(0)
-  const [votes, setVote] = useState(Array(6).fill(0))
+  const [votes, setVote] = useState(Array(dataLenght).fill(0))
 
   const setRandom = (props) => {
     setSelected(Math.floor(Math.random() * anecdotes.length))
@@ -48,7 +52,8 @@ const App = (props) => {
       <Button handleClick={() => giveVote(selected)} text="Vote" />
       <Button handleClick={() => setRandom(anecdotes)} text="Next anecdote" />
       </p>
-      <Statistics votes={votes} />
+      {/* <Statistics votes={votes} /> */}
+      <div>{Statistics(votes)}</div>
     </div>
   )
 }
