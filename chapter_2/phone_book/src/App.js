@@ -24,7 +24,7 @@ const App = () => {
       .then(response => {
         setPersons(response)
       })
-      .catch(error => showMessage("Tietojen haku epäonnistui"), false)
+      .catch(error => showMessage("Tietojen haku epäonnistui", false ))
   }
 
 
@@ -59,7 +59,6 @@ const App = () => {
       }
     }
     
-
     else {
 
       if (persons.some(e => e.number === newNumber)){
