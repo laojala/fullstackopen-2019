@@ -7,7 +7,7 @@ const PhoneBook = (persons, newFilter, removeEntry) => {
       return personInUpperCase.includes(filterUpperCase)
     })
     return newArray.map(person => 
-      <div key={person.name}>{person.id} {person.name} {person.number}<button onClick={() => removeEntry(person)}>poista</button>
+      <div key={person.name}>{person.name} {person.number}<button onClick={() => removeEntry(person)}>poista</button>
       </div>)
   }
 
