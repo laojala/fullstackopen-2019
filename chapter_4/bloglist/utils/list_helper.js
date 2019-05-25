@@ -9,6 +9,13 @@ const totalLikes = (blogs) => {
   return likes ? likes : 0
 }
 
+const favoriteBlog = (blogs) => {
+  if(!blogs[0]) return NaN
+  else {
+    return blogs.reduce((blog, mostLikes) => mostLikes.likes > blog.likes ? mostLikes : blog)
+  }
+}
+
 module.exports = {
-  dummy, totalLikes
+  dummy, totalLikes, favoriteBlog
 }
