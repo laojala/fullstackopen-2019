@@ -78,7 +78,9 @@ const App = () => {
               setNewNumber('')
               showMessage(`Käyttäjä ${newName} on lisätty puhelinluetteloon`)
           })
-            .catch(error => {showMessage(`Käyttäjän ${newName} lisäys luetteloon epäonnistui`, false)}  )
+            .catch(error => {
+              console.log(error.response.data.error)
+              return showMessage(`Numeron lisäys epäonnistui. Lisätiedot virheestä: ${error.response.data.error}`, false)}  )
             getPersons()
         }
       }
@@ -121,7 +123,7 @@ const App = () => {
     setTimeout(() => {
       setNotification(null)
       setSuccess(null)
-    }, 5000)
+    }, 8000)
   }
 
   return (
