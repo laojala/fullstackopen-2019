@@ -87,3 +87,35 @@ describe('favorite blogs', () => {
   })
   
 })
+
+describe('most blogs', () => {
+  const listWithOneBlog = [ test_data.blogs[1] ]
+  const listWithMultipleBlogs = test_data.blogs
+  const emptyList = []
+
+  const expectedWithMultiplegBlogs = {
+    author: 'Robert C. Martin',
+    blogs: 3
+  }
+
+  const expectedWithOneBlog = {
+    'author': 'Edsger W. Dijkstra',
+    'blogs': 1,
+  }
+
+  test('when list has multiple blogs equals first with most likes', () => {
+    const result = listHelper.mostBlogs(listWithMultipleBlogs)
+    expect(result).toEqual(expectedWithMultiplegBlogs)
+  })
+
+  test('when list is empty equals NaN', () => {
+    const result = listHelper.mostBlogs(emptyList)
+    expect(result).toEqual(NaN)
+  })
+
+  test.only('when list has one blog equals to it', () => {
+    const result = listHelper.mostBlogs(listWithOneBlog)
+    expect(result).toEqual(expectedWithOneBlog)
+  })
+  
+})

@@ -18,6 +18,24 @@ const favoriteBlog = (blogs) => {
   }
 }
 
+const mostBlogs = blogs => {
+
+  if(!blogs[0]) return NaN
+
+  let authors = _.countBy(blogs, 'author')
+  let max = _.max(Object.values(authors))
+  let authorWithMostBlogs = Object.keys(authors).reduce((current, mostblogs) => authors[current] > authors[mostBlogs] ? current : mostblogs)
+
+  let author = {
+    author: authorWithMostBlogs,
+    blogs: max
+  }
+
+  return author
+
+}
+  
+
 module.exports = {
-  dummy, totalLikes, favoriteBlog
+  dummy, totalLikes, favoriteBlog, mostBlogs
 }
