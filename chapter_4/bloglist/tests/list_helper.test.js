@@ -89,21 +89,22 @@ describe('favorite blogs', () => {
 })
 
 describe('most blogs', () => {
-  const listWithOneBlog = [ test_data.blogs[1] ]
+  const listWithZeroLikes = [ test_data.blogs[1] ]
   const listWithMultipleBlogs = test_data.blogs
   const emptyList = []
 
   const expectedWithMultiplegBlogs = {
     author: 'Robert C. Martin',
-    blogs: 3
+    blogs: 4
   }
 
   const expectedWithOneBlog = {
     'author': 'Edsger W. Dijkstra',
     'blogs': 1,
   }
+  
 
-  test('when list has multiple blogs equals first with most likes', () => {
+  test('when list has multiple authors equals author with most blogs', () => {
     const result = listHelper.mostBlogs(listWithMultipleBlogs)
     expect(result).toEqual(expectedWithMultiplegBlogs)
   })
@@ -113,9 +114,52 @@ describe('most blogs', () => {
     expect(result).toEqual(NaN)
   })
 
-  test.only('when list has one blog equals to it', () => {
-    const result = listHelper.mostBlogs(listWithOneBlog)
+  test('when list has one blog equals to it', () => {
+    const result = listHelper.mostBlogs(listWithZeroLikes)
     expect(result).toEqual(expectedWithOneBlog)
   })
-  
 })
+
+describe('most likes', () => {
+  const listWithMultipleBlogs = test_data.blogs
+  const emptyList = []
+  const listWithOneBlog = [ test_data.blogs[3] ]
+  const listWithZeroLikes = test_data.blogs_zero
+
+  const expectedWithMultiplegBlogs = {
+    author: 'Robert C. Martin',
+    likes: 22
+  }
+
+  const expectedWithOneBlog = {
+    author: 'Robert C. Martin',
+    likes: 10,
+  }
+
+  const expectedWithZeroLikes= {
+    'author': 'Edsger W. Dijkstra',
+    likes: 0,
+  }
+
+  test('when list has multiple blogs equals author with most likes', () => {
+    const result = listHelper.mostLikes(listWithMultipleBlogs)
+    expect(result).toEqual(expectedWithMultiplegBlogs)
+  })
+
+  test('when list is empty equals NaN', () => {
+    const result = listHelper.mostLikes(emptyList)
+    expect(result).toEqual(NaN)
+  })
+
+  test('when list has one blog equals autohor and likes', () => {
+    const result = listHelper.mostLikes(listWithOneBlog)
+    expect(result).toEqual(expectedWithOneBlog)
+  })
+
+  test('when list has zero likes and missing likes key equals first author 0 likes', () => {
+    const result = listHelper.mostLikes(listWithZeroLikes)
+    expect(result).toEqual(expectedWithZeroLikes)
+  })
+
+})
+

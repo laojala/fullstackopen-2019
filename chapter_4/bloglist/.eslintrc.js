@@ -10,26 +10,26 @@ module.exports = {
   },
   "rules": {
       "indent": [
-          "error",
+          "warn",
           2
       ],
       "linebreak-style": [
-          "error",
+          "warn",
           "unix"
       ],
       "quotes": [
-          "error",
+          "warn",
           "single"
       ],
       "semi": [
-          "error",
+          "warn",
           "never"
       ],
       "eqeqeq": "error",
       "no-trailing-spaces": 
         ["warn", {"skipBlankLines": true}],
       "object-curly-spacing": [
-          "error", "always"
+          "warn", "always"
       ],
       "arrow-spacing": [
           "error", { "before": true, "after": true }
