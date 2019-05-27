@@ -6,7 +6,7 @@ const blogsRouter = require('./controllers/blogs')
 const middleware = require('./utils/middleware')
 const mongoose = require('mongoose')
 
-mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true })
+mongoose.connect(config.mongoUrl, { useNewUrlParser: true })
   .then(() => {
     console.log('connected to MongoDB')
   })
