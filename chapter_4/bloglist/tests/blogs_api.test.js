@@ -62,6 +62,39 @@ test('a valid blog can be added ', async () => {
     'How to test Express.js with Jest and Supertest')
 })
 
+test('if post body does not have likes, likes is 0 ', async () => {
+  const newBlog = {
+    title: 'Testing empty likes',
+    author: 'Empty Barrel',
+    url: 'xxyyööää.emptyurl.fi'
+  }
+
+  const response = await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+  
+  expect(response.body.likes).toBe(0)
+})
+
+
+test('if post body has likes, expect correct likes', async () => {
+  const newBlog = {
+    title: 'Testing five likes',
+    author: 'Five is a magic number',
+    url: 'xxyyööää.emptyurl.fi/5',
+    likes: '5'
+  }
+
+  const response = await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+  
+  expect(response.body.likes).toBe(5)
+})
 
 afterAll(() => {
   mongoose.connection.close()
