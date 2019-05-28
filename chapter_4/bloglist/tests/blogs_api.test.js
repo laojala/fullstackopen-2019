@@ -96,6 +96,40 @@ test('if post body has likes, expect correct likes', async () => {
   expect(response.body.likes).toBe(5)
 })
 
+test('if post body is missing title, response is 400 and item is not added', async () => {
+  const newBlog = {
+    author: 'No title here',
+    url: '',
+    likes: '5'
+  }
+
+  const response = await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+    .expect('Content-Type', /application\/json/)
+  
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd.length).toBe(initialBlogsLength)
+})
+
+test('if post body is missing author, response is 400 and item is not added', async () => {
+  const newBlog = {
+    title: 'No author here',
+    url: '',
+    likes: '5'
+  }
+
+  const response = await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+    .expect('Content-Type', /application\/json/)
+  
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd.length).toBe(initialBlogsLength)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
