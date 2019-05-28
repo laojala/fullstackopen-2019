@@ -11,6 +11,8 @@ const api = supertest(app)
 // to run only this collection:
 // npx jest tests/blogs_api.test.js --runInBand
 
+const initialBlogsLength = 2
+
 beforeEach(async () => {
 
   await Blog.remove({})
@@ -20,6 +22,7 @@ beforeEach(async () => {
 
   blogObject = new Blog(initialBlogs.blogs[1])
   await blogObject.save()
+
 })
 
 
@@ -37,7 +40,28 @@ test('blog json contains field "id"', async () => {
   expect(blogs[0].id).toBeDefined()
 })
 
-//test.only()
+test('a valid blog can be added ', async () => {
+  const newBlog = {
+    title: 'How to test Express.js with Jest and Supertest',
+    author: 'Albert Gao',
+    url: 'http://www.albertgao.xyz/2017/05/24/how-to-test-expressjs-with-jest-and-supertest/',
+    likes: 45
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd.length).toBe(initialBlogsLength + 1)
+
+  const contents = blogsAtEnd.map(n => n.title)
+  expect(contents).toContain(
+    'How to test Express.js with Jest and Supertest')
+})
+
 
 afterAll(() => {
   mongoose.connection.close()
