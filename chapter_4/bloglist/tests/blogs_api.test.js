@@ -103,7 +103,7 @@ test('if post body is missing title, response is 400 and item is not added', asy
     likes: '5'
   }
 
-  const response = await api
+  await api
     .post('/api/blogs')
     .send(newBlog)
     .expect(400)
@@ -120,7 +120,7 @@ test('if post body is missing author, response is 400 and item is not added', as
     likes: '5'
   }
 
-  const response = await api
+  await api
     .post('/api/blogs')
     .send(newBlog)
     .expect(400)
@@ -128,6 +128,45 @@ test('if post body is missing author, response is 400 and item is not added', as
   
   const blogsAtEnd = await helper.blogsInDb()
   expect(blogsAtEnd.length).toBe(initialBlogsLength)
+})
+
+test('entry can be deleted', async () => {
+
+  const blogs = await helper.blogsInDb()
+  const id = blogs[0].id
+
+  await api
+    .delete(`/api/blogs/${id}`)
+    .expect(204)
+  
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd.length).toBe(blogs.length-1)
+})
+
+test.only('entry can be updated', async () => {
+
+  const blogs = await helper.blogsInDb()
+  const id = blogs[0].id
+
+  console.log(id)
+
+  const newBlog = {
+    author: 'new',
+    title: 'New Title',
+    url: 'new url',
+    likes: 55
+  }
+
+  await api
+    .put(`/api/blogs/${id}`)
+    .send(newBlog)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+  
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd.length).toBe(initialBlogsLength)
+
+  expect(blogsAtEnd[0].likes).toBe(newBlog.likes)
 })
 
 afterAll(() => {

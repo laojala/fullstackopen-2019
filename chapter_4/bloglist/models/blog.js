@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 
+//mongoose.set('useFindAndModify', false)
+
 const blogSchema = new mongoose.Schema({
   title: String,
   author: String,
