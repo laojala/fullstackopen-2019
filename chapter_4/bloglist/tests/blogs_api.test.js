@@ -25,149 +25,160 @@ beforeEach(async () => {
 
 })
 
-
-test('blogs are returned as json', async () => {
-  await api
-    .get('/api/blogs')
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
-})
-
-test('blog json contains field "id"', async () => {
-  await api
-  const blogs = await helper.blogsInDb()
-  console.log(blogs[0])
-  expect(blogs[0].id).toBeDefined()
-})
-
-test('a valid blog can be added ', async () => {
-  const newBlog = {
-    title: 'How to test Express.js with Jest and Supertest',
-    author: 'Albert Gao',
-    url: 'http://www.albertgao.xyz/2017/05/24/how-to-test-expressjs-with-jest-and-supertest/',
-    likes: 45
-  }
-
-  await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(201)
-    .expect('Content-Type', /application\/json/)
-
-  const blogsAtEnd = await helper.blogsInDb()
-  expect(blogsAtEnd.length).toBe(initialBlogsLength + 1)
-
-  const contents = blogsAtEnd.map(n => n.title)
-  expect(contents).toContain(
-    'How to test Express.js with Jest and Supertest')
-})
-
-test('if post body does not have likes, likes is 0 ', async () => {
-  const newBlog = {
-    title: 'Testing empty likes',
-    author: 'Empty Barrel',
-    url: 'xxyyööää.emptyurl.fi'
-  }
-
-  const response = await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(201)
-    .expect('Content-Type', /application\/json/)
+describe('GET method returns entries', async () => {
+  test('blogs are returned as json', async () => {
+    await api
+      .get('/api/blogs')
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+  })
   
-  expect(response.body.likes).toBe(0)
+  test('blog json contains field "id"', async () => {
+    await api
+    const blogs = await helper.blogsInDb()
+    console.log(blogs[0])
+    expect(blogs[0].id).toBeDefined()
+  })
 })
 
-
-test('if post body has likes, expect correct likes', async () => {
-  const newBlog = {
-    title: 'Testing five likes',
-    author: 'Five is a magic number',
-    url: 'xxyyööää.emptyurl.fi/5',
-    likes: '5'
-  }
-
-  const response = await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(201)
-    .expect('Content-Type', /application\/json/)
+describe('POST method adds a valid entry', async () => {
   
-  expect(response.body.likes).toBe(5)
-})
-
-test('if post body is missing title, response is 400 and item is not added', async () => {
-  const newBlog = {
-    author: 'No title here',
-    url: '',
-    likes: '5'
-  }
-
-  await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(400)
-    .expect('Content-Type', /application\/json/)
+  test('a valid blog can be added ', async () => {
+    const newBlog = {
+      title: 'How to test Express.js with Jest and Supertest',
+      author: 'Albert Gao',
+      url: 'http://www.albertgao.xyz/2017/05/24/how-to-test-expressjs-with-jest-and-supertest/',
+      likes: 45
+    }
   
-  const blogsAtEnd = await helper.blogsInDb()
-  expect(blogsAtEnd.length).toBe(initialBlogsLength)
-})
-
-test('if post body is missing author, response is 400 and item is not added', async () => {
-  const newBlog = {
-    title: 'No author here',
-    url: '',
-    likes: '5'
-  }
-
-  await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(400)
-    .expect('Content-Type', /application\/json/)
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
   
-  const blogsAtEnd = await helper.blogsInDb()
-  expect(blogsAtEnd.length).toBe(initialBlogsLength)
-})
-
-test('entry can be deleted', async () => {
-
-  const blogs = await helper.blogsInDb()
-  const id = blogs[0].id
-
-  await api
-    .delete(`/api/blogs/${id}`)
-    .expect(204)
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd.length).toBe(initialBlogsLength + 1)
   
-  const blogsAtEnd = await helper.blogsInDb()
-  expect(blogsAtEnd.length).toBe(blogs.length-1)
-})
-
-test.only('entry can be updated', async () => {
-
-  const blogs = await helper.blogsInDb()
-  const id = blogs[0].id
-
-  console.log(id)
-
-  const newBlog = {
-    author: 'new',
-    title: 'New Title',
-    url: 'new url',
-    likes: 55
-  }
-
-  await api
-    .put(`/api/blogs/${id}`)
-    .send(newBlog)
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
+    const contents = blogsAtEnd.map(n => n.title)
+    expect(contents).toContain(
+      'How to test Express.js with Jest and Supertest')
+  })
+  test('if post body does not have likes, likes is 0 ', async () => {
+    const newBlog = {
+      title: 'Testing empty likes',
+      author: 'Empty Barrel',
+      url: 'xxyyööää.emptyurl.fi'
+    }
   
-  const blogsAtEnd = await helper.blogsInDb()
-  expect(blogsAtEnd.length).toBe(initialBlogsLength)
-
-  expect(blogsAtEnd[0].likes).toBe(newBlog.likes)
+    const response = await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+    
+    expect(response.body.likes).toBe(0)
+  })
+  
+  
+  test('if post body has likes, expect correct likes', async () => {
+    const newBlog = {
+      title: 'Testing five likes',
+      author: 'Five is a magic number',
+      url: 'xxyyööää.emptyurl.fi/5',
+      likes: '5'
+    }
+  
+    const response = await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+    
+    expect(response.body.likes).toBe(5)
+  })
+  
+  test('if post body is missing title, response is 400 and item is not added', async () => {
+    const newBlog = {
+      author: 'No title here',
+      url: '',
+      likes: '5'
+    }
+  
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+    
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd.length).toBe(initialBlogsLength)
+  })
+  
+  test('if post body is missing author, response is 400 and item is not added', async () => {
+    const newBlog = {
+      title: 'No author here',
+      url: '',
+      likes: '5'
+    }
+  
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+    
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd.length).toBe(initialBlogsLength)
+  })
 })
+
+
+describe('DELETE method deletes entry', async () => {
+  
+  test('entry can be deleted', async () => {
+
+    const blogs = await helper.blogsInDb()
+    const id = blogs[0].id
+  
+    await api
+      .delete(`/api/blogs/${id}`)
+      .expect(204)
+    
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd.length).toBe(blogs.length-1)
+  })
+})
+
+describe('PUT method updates entry', async () => {
+  
+  test('entry can be updated', async () => {
+
+    const blogs = await helper.blogsInDb()
+    const id = blogs[0].id
+  
+    console.log(id)
+  
+    const newBlog = {
+      author: 'new',
+      title: 'New Title',
+      url: 'new url',
+      likes: 55
+    }
+  
+    await api
+      .put(`/api/blogs/${id}`)
+      .send(newBlog)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+    
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd.length).toBe(initialBlogsLength)
+  
+    expect(blogsAtEnd[0].likes).toBe(newBlog.likes)
+  })
+})
+
 
 afterAll(() => {
   mongoose.connection.close()
