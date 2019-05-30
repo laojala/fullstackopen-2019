@@ -5,6 +5,7 @@ const helper = require('./test_helper')
 const initialBlogs = require('./test_data.js')
 
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 const api = supertest(app)
 
@@ -25,7 +26,7 @@ beforeEach(async () => {
 
 })
 
-describe('GET method returns entries', async () => {
+describe('GET method returns blog entries', () => {
   test('blogs are returned as json', async () => {
     await api
       .get('/api/blogs')
@@ -41,7 +42,7 @@ describe('GET method returns entries', async () => {
   })
 })
 
-describe('POST method adds a valid entry', async () => {
+describe('POST method adds a valid blog entry', () => {
   
   test('a valid blog can be added ', async () => {
     const newBlog = {
@@ -134,7 +135,7 @@ describe('POST method adds a valid entry', async () => {
 })
 
 
-describe('DELETE method deletes entry', async () => {
+describe('DELETE method deletes blog entry', () => {
   
   test('entry can be deleted', async () => {
 
@@ -150,7 +151,7 @@ describe('DELETE method deletes entry', async () => {
   })
 })
 
-describe('PUT method updates entry', async () => {
+describe('PUT method updates blog entry', () => {
   
   test('entry can be updated', async () => {
 
@@ -176,6 +177,36 @@ describe('PUT method updates entry', async () => {
     expect(blogsAtEnd.length).toBe(initialBlogsLength)
   
     expect(blogsAtEnd[0].likes).toBe(newBlog.likes)
+  })
+})
+
+describe('When there is initially one user at Users db', () => {
+  beforeEach(async () => {
+    await User.deleteMany({})
+    const user = new User({ username: 'rootroot', password: 'salasana' })
+    await user.save()
+  })
+
+  test('POST user succeeds with a fresh username', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const newUser = {
+      username: 'username1',
+      name: 'Person Name',
+      password: 'very secret',
+    }
+
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd.length).toBe(usersAtStart.length + 1)
+
+    const usernames = usersAtEnd.map(user => user.username)
+    expect(usernames).toContain(newUser.username)
   })
 })
 
