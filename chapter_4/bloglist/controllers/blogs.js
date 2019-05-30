@@ -1,25 +1,51 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
+const User = require('../models/user')
+
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({})
   response.json(blogs.map(blog => blog.toJSON()))
 })
 
-blogsRouter.post('/', async (request, response) => {
+blogsRouter.post('/', async (request, response , next) => {
 
-  if (request.body.likes === undefined)
-    request.body.likes = 0
+  const body = request.body
 
-  if (request.body.title === undefined)
+  if (body.likes === undefined)
+    body.likes = 0
+
+  if (body.title === undefined)
     return response.status(400).json({ error: 'Title is missing' })
 
-  if (request.body.author === undefined)
+  if (body.author === undefined)
     return response.status(400).json({ error: 'Author is missing' })
 
-  const blog = new Blog(request.body)
-  const result = await blog.save()
-  response.status(201).json(result)
+  //const user = await User.findById(body.userId)
+  //temporarily using first user:
+  const users =  await User.find({})
+  const user = users[0]
+  const id = users[0].id
+  console.log('IIIDEE: ' + id)
+
+  const blog = new Blog({
+    title: body.title,
+    author: body.author,
+    likes: body.likes,
+    user: id
+    //user: user._id
+  })
+
+  try {
+    const savedBlog = await blog.save()
+    user.blogs = user.blogs.concat(savedBlog._id)
+    await user.save()
+    response.status(201).json(savedBlog)
+    //response.json(savedBlog.toJSON())
+  } catch(exception) {
+    next(exception)
+  }
+  
 })
 
 blogsRouter.delete('/:id', async (request, response, next) => {

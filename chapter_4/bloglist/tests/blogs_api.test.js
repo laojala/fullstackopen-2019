@@ -187,7 +187,7 @@ describe('When there is initially one user at Users db', () => {
     await user.save()
   })
 
-  test('POST user succeeds with a fresh username', async () => {
+  test('POST new user succeeds with a unique username', async () => {
     const usersAtStart = await helper.usersInDb()
 
     const newUser = {
@@ -229,7 +229,7 @@ describe('When there is initially one user at Users db', () => {
 
   })
 
-  test('Password using 2 characters is not valid', async () => {
+  test('Password with 2 characters is not valid', async () => {
     const usersAtStart = await helper.usersInDb()
 
     const userNameAlreadyInUse = {
@@ -249,9 +249,9 @@ describe('When there is initially one user at Users db', () => {
 
   })
 
-  test('Password using 3 characters is valid', async () => {
+  test('Password with 3 characters is valid', async () => {
     const usersAtStart = await helper.usersInDb()
-
+  
     const userNameAlreadyInUse = {
       username: 'unique',
       name: 'Person Name',
