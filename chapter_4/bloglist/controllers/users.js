@@ -8,6 +8,10 @@ usersRouter.get('/', async (request, response) => {
 })
 
 usersRouter.post('/', async (request, response, next) => {
+
+  if (request.body.password.length < 3)
+    return response.status(400).json({ error: 'Password too short' })
+
   try {
     const body = request.body
 
@@ -19,6 +23,7 @@ usersRouter.post('/', async (request, response, next) => {
       name: body.name,
       passwordHash,
     })
+
 
     const savedUser = await user.save()
 
