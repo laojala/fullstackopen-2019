@@ -1,10 +1,11 @@
 
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: Bearer 
 
 {
-"title": "UUSIN",
-"author": "TOIMIIKO????",
+"title": "Tokenilla2",
+"author": "Tomiiko",
 "url": "url",
-"likes": "42"
+"likes": "100000"
 }
