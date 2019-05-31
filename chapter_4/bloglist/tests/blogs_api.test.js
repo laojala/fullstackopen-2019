@@ -26,7 +26,7 @@ beforeEach(async () => {
 
 })
 
-describe('GET method returns blog entries', () => {
+describe('GET method returns blog entries (NOTE: no tests for linking note and author)', () => {
   test('blogs are returned as json', async () => {
     await api
       .get('/api/blogs')
@@ -43,8 +43,20 @@ describe('GET method returns blog entries', () => {
 })
 
 describe('POST method adds a valid blog entry', () => {
+  beforeEach(async () => {
+    const newUser = { username: 'kissa', name: 'Firstname Lastname', password: 'kala' }
+    await api.post('/api/users').send(newUser)
+  })
   
-  test('a valid blog can be added ', async () => {
+  test('a blog can be added with correct Token', async () => {
+
+    const validUser = {
+      username: 'kissa',
+      password: 'kala'
+    }
+
+    const token = await helper.loginAndReturnToken(validUser)
+   
     const newBlog = {
       title: 'How to test Express.js with Jest and Supertest',
       author: 'Albert Gao',
@@ -54,8 +66,9 @@ describe('POST method adds a valid blog entry', () => {
   
     await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(newBlog)
-      .expect(201)
+      .expect(200)
       .expect('Content-Type', /application\/json/)
   
     const blogsAtEnd = await helper.blogsInDb()
@@ -65,7 +78,43 @@ describe('POST method adds a valid blog entry', () => {
     expect(contents).toContain(
       'How to test Express.js with Jest and Supertest')
   })
+
+  test('a blog cannot be added with invalid Token', async () => {
+
+    const validUser = {
+      username: 'kissa',
+      password: 'kala'
+    }
+
+    const token = await helper.loginAndReturnToken(validUser)
+   
+    const newBlog = {
+      title: 'How to test Express.js with Jest and Supertest',
+      author: 'Albert Gao',
+      url: 'http://www.albertgao.xyz/2017/05/24/how-to-test-expressjs-with-jest-and-supertest/',
+      likes: 45
+    }
+  
+    await api
+      .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}INVALIDPART`)
+      .send(newBlog)
+      .expect(401)
+      .expect('Content-Type', /application\/json/)
+  
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd.length).toBe(initialBlogsLength)
+  })
+
   test('if post body does not have likes, likes is 0 ', async () => {
+
+    const validUser = {
+      username: 'kissa',
+      password: 'kala'
+    }
+
+    const token = await helper.loginAndReturnToken(validUser)
+
     const newBlog = {
       title: 'Testing empty likes',
       author: 'Empty Barrel',
@@ -74,8 +123,9 @@ describe('POST method adds a valid blog entry', () => {
   
     const response = await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(newBlog)
-      .expect(201)
+      .expect(200)
       .expect('Content-Type', /application\/json/)
     
     expect(response.body.likes).toBe(0)
@@ -83,6 +133,13 @@ describe('POST method adds a valid blog entry', () => {
   
   
   test('if post body has likes, expect correct likes', async () => {
+
+    const validUser = {
+      username: 'kissa',
+      password: 'kala'
+    }
+
+    const token = await helper.loginAndReturnToken(validUser)
     const newBlog = {
       title: 'Testing five likes',
       author: 'Five is a magic number',
@@ -92,14 +149,23 @@ describe('POST method adds a valid blog entry', () => {
   
     const response = await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(newBlog)
-      .expect(201)
+      .expect(200)
       .expect('Content-Type', /application\/json/)
     
     expect(response.body.likes).toBe(5)
   })
   
   test('if post body is missing title, response is 400 and item is not added', async () => {
+    
+    const validUser = {
+      username: 'kissa',
+      password: 'kala'
+    }
+
+    const token = await helper.loginAndReturnToken(validUser)
+    
     const newBlog = {
       author: 'No title here',
       url: '',
@@ -108,6 +174,7 @@ describe('POST method adds a valid blog entry', () => {
   
     await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(newBlog)
       .expect(400)
       .expect('Content-Type', /application\/json/)
@@ -117,6 +184,13 @@ describe('POST method adds a valid blog entry', () => {
   })
   
   test('if post body is missing author, response is 400 and item is not added', async () => {
+
+    const validUser = {
+      username: 'kissa',
+      password: 'kala'
+    }
+
+    const token = await helper.loginAndReturnToken(validUser)
     const newBlog = {
       title: 'No author here',
       url: '',
@@ -125,6 +199,7 @@ describe('POST method adds a valid blog entry', () => {
   
     await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(newBlog)
       .expect(400)
       .expect('Content-Type', /application\/json/)
@@ -326,10 +401,6 @@ describe('When user logins', () => {
   
   })
 })
-
-
-
-
 
 afterAll(() => {
   mongoose.connection.close()
