@@ -33,11 +33,6 @@ describe('When user logins', () => {
   
   test('User receives Access Token with valid password', async () => {
       
-    const validUser = {
-      username: 'kissa',
-      password: 'kala'
-    }
-  
     const response = await api
       .post('/api/login')
       .send(validUser)
@@ -90,11 +85,6 @@ describe('POST method adds a valid blog entry', () => {
     
   test('a blog can be added with correct Token', async () => {
   
-    const validUser = {
-      username: 'kissa',
-      password: 'kala'
-    }
-  
     const token = await helper.loginAndReturnToken(validUser)
      
     const newBlog = {
@@ -121,11 +111,6 @@ describe('POST method adds a valid blog entry', () => {
   
   test('a blog cannot be added with invalid Token', async () => {
   
-    const validUser = {
-      username: 'kissa',
-      password: 'kala'
-    }
-  
     const token = await helper.loginAndReturnToken(validUser)
      
     const newBlog = {
@@ -148,11 +133,6 @@ describe('POST method adds a valid blog entry', () => {
   
   test('if post body does not have likes, likes is 0 ', async () => {
   
-    const validUser = {
-      username: 'kissa',
-      password: 'kala'
-    }
-  
     const token = await helper.loginAndReturnToken(validUser)
   
     const newBlog = {
@@ -174,11 +154,6 @@ describe('POST method adds a valid blog entry', () => {
     
   test('if post body has likes, expect correct likes', async () => {
   
-    const validUser = {
-      username: 'kissa',
-      password: 'kala'
-    }
-  
     const token = await helper.loginAndReturnToken(validUser)
     const newBlog = {
       title: 'Testing five likes',
@@ -198,11 +173,6 @@ describe('POST method adds a valid blog entry', () => {
   })
     
   test('if post body is missing title, response is 400 and item is not added', async () => {
-      
-    const validUser = {
-      username: 'kissa',
-      password: 'kala'
-    }
   
     const token = await helper.loginAndReturnToken(validUser)
       
@@ -272,8 +242,6 @@ describe('DELETE method deletes blog entry', () => {
   
     const blogs = await helper.blogsInDb()
     const id = blogs[0].id
-  
-    console.log('BLOGI' + JSON.stringify(blogs[0]))
     
     await api
       .delete(`/api/blogs/${id}`)
@@ -282,6 +250,48 @@ describe('DELETE method deletes blog entry', () => {
       
     const blogsAtEnd = await helper.blogsInDb()
     expect(blogsAtEnd.length).toBe(blogs.length-1)
+  })
+})
+
+describe('PUT method updates blog entry', () => {
+  
+  test('only likes can be updated', async () => {
+
+    const user = await api.post('/api/users').send(validUser)
+    const token = await helper.loginAndReturnToken(validUser)
+     
+    const initialBlog = { title: 'Title', author: 'Some Author', url: 'some url', likes: 2 }
+    
+    const initialEntry = await api
+      .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
+      .send(initialBlog)
+      .expect(200)
+
+    const newBlog = {
+      author: 'new',
+      title: 'New Title',
+      url: 'new url',
+      likes: 55,
+      user: initialEntry.body.user
+    }
+
+    const id = initialEntry.body.id
+  
+    await api
+      .put(`/api/blogs/${id}`)
+      .send(newBlog)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+    
+    
+    const blogAfterPut = await Blog.findById(initialEntry.body.id)
+
+    expect(blogAfterPut.likes).toBe(newBlog.likes)
+    expect(blogAfterPut.author).toBe(initialBlog.author)
+    expect(blogAfterPut.title).toBe(initialBlog.title)
+    expect(blogAfterPut.url).toBe(initialBlog.url)
+    expect(blogAfterPut.user.toString()).toContain(user.body.id.toString())
   })
 })
 

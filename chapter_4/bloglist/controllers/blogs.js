@@ -36,6 +36,7 @@ blogsRouter.post('/', async (request, response , next) => {
       title: body.title,
       author: body.author,
       likes: body.likes,
+      url: body.url,
       user: user._id
     })
 
@@ -61,7 +62,6 @@ blogsRouter.delete('/:id', async (request, response, next) => {
     const user = await User.findById(decodedToken.id)
     const blog = await Blog.findById(request.params.id)
 
-    console.log('BLOG:' + blog)
 
     //blog already removed:
     if (blog === null) {
@@ -82,21 +82,17 @@ blogsRouter.delete('/:id', async (request, response, next) => {
 })
 
 
-blogsRouter.put('/:id', (request, response, next) => {
+blogsRouter.put('/:id', async (request, response, next) => {
   const body = request.body
 
-  const blog = {
-    title: body.title,
-    author: body.author,
-    url: body.url,
-    likes: body.likes
-  }
+  const originalBlog = await Blog.findById(request.params.id)
+
+  const blog = originalBlog
+
+  blog.likes = body.likes
 
   if (blog.likes === undefined)
     request.body.likes = 0
-
-  if  (blog.title === undefined || blog.author === undefined || blog.url === undefined)
-    return response.status(400).json({ error: 'Data is missing' })
 
   Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
     .then(updatedNote => {

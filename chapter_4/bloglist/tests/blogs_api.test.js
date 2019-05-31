@@ -14,6 +14,11 @@ const api = supertest(app)
 
 const initialBlogsLength = 2
 
+const validUser = {
+  username: 'kissa',
+  password: 'kala'
+}
+
 beforeEach(async () => {
 
   await Blog.remove({})
@@ -40,36 +45,6 @@ describe('GET method returns blog entries (NOTE: no tests for linking note and a
     const blogs = await helper.blogsInDb()
     console.log(blogs[0])
     expect(blogs[0].id).toBeDefined()
-  })
-})
-
-
-describe('PUT method updates blog entry', () => {
-  
-  test('entry can be updated', async () => {
-
-    const blogs = await helper.blogsInDb()
-    const id = blogs[0].id
-  
-    console.log(id)
-  
-    const newBlog = {
-      author: 'new',
-      title: 'New Title',
-      url: 'new url',
-      likes: 55
-    }
-  
-    await api
-      .put(`/api/blogs/${id}`)
-      .send(newBlog)
-      .expect(200)
-      .expect('Content-Type', /application\/json/)
-    
-    const blogsAtEnd = await helper.blogsInDb()
-    expect(blogsAtEnd.length).toBe(initialBlogsLength)
-  
-    expect(blogsAtEnd[0].likes).toBe(newBlog.likes)
   })
 })
 
