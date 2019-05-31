@@ -270,6 +270,66 @@ describe('When there is initially one user at Users db', () => {
   })
 })
 
+describe('When user logins', () => {
+  beforeEach(async () => {
+    const newUser = { username: 'kissa', name: 'käyttäjänmi', password: 'kala' }
+    await api.post('/api/users').send(newUser)
+  })
+
+  test('User receives Access Token with valid password', async () => {
+    
+    const validUser = {
+      username: 'kissa',
+      password: 'kala'
+    }
+
+    const response = await api
+      .post('/api/login')
+      .send(validUser)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    expect(response.body.token.length).toBe(173)
+    
+  })
+
+  test('User does not receive token with invalid password', async () => {
+    
+    const invalidUser = {
+      username: 'kissa',
+      password: 'invalid'
+    }
+
+    const response = await api
+      .post('/api/login')
+      .send(invalidUser)
+      .expect(401)
+      .expect('Content-Type', /application\/json/)
+      
+    expect(response.body.token).toBeUndefined()
+  })
+
+  test('User does not receive token with invalid username', async () => {
+    
+    const invalidUser = {
+      username: 'invalid',
+      password: 'kala'
+    }
+  
+    const response = await api
+      .post('/api/login')
+      .send(invalidUser)
+      .expect(401)
+      .expect('Content-Type', /application\/json/)
+      
+    expect(response.body.token).toBeUndefined()
+  
+  })
+})
+
+
+
+
 
 afterAll(() => {
   mongoose.connection.close()
