@@ -32,7 +32,6 @@ blogsRouter.post('/', async (request, response , next) => {
 
     const user = await User.findById(decodedToken.id)
 
-
     const blog = new Blog({
       title: body.title,
       author: body.author,
@@ -50,9 +49,33 @@ blogsRouter.post('/', async (request, response , next) => {
 })
 
 blogsRouter.delete('/:id', async (request, response, next) => {
+
+  const token = request.token
+
   try {
-    await Blog.findByIdAndRemove(request.params.id)
-    response.status(204).end()
+    const decodedToken = jwt.verify(token, process.env.SECRET)
+    if (!token || !decodedToken.id) {
+      return response.status(401).json({ error: 'token missing or invalid' })
+    }
+
+    const user = await User.findById(decodedToken.id)
+    const blog = await Blog.findById(request.params.id)
+
+    console.log('BLOG:' + blog)
+
+    //blog already removed:
+    if (blog === null) {
+      return response.status(204).end()
+    }
+
+    if (user.id.toString() === blog.user.toString()) {
+      await Blog.findByIdAndRemove(request.params.id)
+      response.status(204).end()
+    }
+    else {
+      return response.status(401).json({ error: 'Unauthorized. User has not created this entry anc can not remove it.' })
+    }
+
   } catch (exception) {
     next(exception)
   }
