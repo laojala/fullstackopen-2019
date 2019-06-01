@@ -12,6 +12,11 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
+  //add new blog
+  const [newTitle, setTitle] = useState('')
+  const [newAuthor, setAuthor] = useState('')
+  const [newUrl, setUrl] = useState('')
+
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
@@ -54,6 +59,41 @@ const App = () => {
     setUser(null)
   }
 
+  const handleNewTitle = (event) => {
+    setTitle(event.target.value)  
+  }
+
+  const handleNewAuthor = (event) => {
+    setAuthor(event.target.value)  
+  }
+
+  const handleNewUrl = (event) => {
+    setUrl(event.target.value)  
+  }
+
+  const addBlogEntry = async (event) => {
+    event.preventDefault()
+    const blogObject = {
+      title: newTitle,
+      author: newAuthor,
+      url: newUrl
+    }
+
+    try {
+      const newBlog = await blogService.create(blogObject)
+      
+      setBlogs(blogs.concat(newBlog))
+      setTitle('')
+      setAuthor('')
+      setUrl('')
+
+    } catch (exception) {
+      console.log("ERROR:", exception)
+      }
+
+    }
+
+  
 
   if (user === null)
     return (
@@ -67,7 +107,7 @@ const App = () => {
         <div>{user.name} logged in</div>
         <div>{LogoutButton(handleLogout)}</div>
         <h2>Blogs</h2>
-        <AddBlog />
+        <div>{AddBlog(addBlogEntry, newTitle, handleNewTitle, newAuthor, handleNewAuthor, newUrl, handleNewUrl)}</div>
         <br/>
         <div>
           {blogs.map(blog =>
