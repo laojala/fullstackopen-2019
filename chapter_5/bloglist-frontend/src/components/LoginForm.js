@@ -5,7 +5,7 @@ const LoginForm = (handleLogin, username, setUsername, password, setPassword) =>
         <h2>Login</h2>
         <form onSubmit={handleLogin}>
         <div>
-            käyttäjätunnus
+            Username:
             <input
             type="text"
             value={username}
@@ -14,7 +14,7 @@ const LoginForm = (handleLogin, username, setUsername, password, setPassword) =>
             />
         </div>
         <div>
-            salasana
+            Password:
             <input
             type="password"
             value={password}
@@ -22,7 +22,7 @@ const LoginForm = (handleLogin, username, setUsername, password, setPassword) =>
             onChange={({ target }) => setPassword(target.value)}
             />
         </div>
-        <button type="submit">kirjaudu</button>
+        <button type="submit">Login</button>
         </form>
     </>
 )

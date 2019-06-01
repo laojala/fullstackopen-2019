@@ -5,12 +5,19 @@ import ListBlogs from './components/ListBlogs'
 import LoginForm from './components/LoginForm'
 import LogoutButton from './components/LogoutButton'
 import AddBlog from './components/AddBlog'
+import Notification from './components/Notification'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
+
+  //login
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+
+  //notifications
+  const [ notification, setNotification] = useState(null)
+  const [ success, setSuccess] = useState(null)
 
   //add new blog
   const [newTitle, setTitle] = useState('')
@@ -45,12 +52,12 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
+      showMessage('Logged in')
+
+
     } catch (exception) {
       console.log("ERROR:", exception)
-      // setErrorMessage('käyttäjätunnus tai salasana virheellinen')
-      // setTimeout(() => {
-      //   setErrorMessage(null)
-      // }, 5000)
+      showMessage(`Incorrect username or password`, false)
     }
   }
 
@@ -86,36 +93,52 @@ const App = () => {
       setTitle('')
       setAuthor('')
       setUrl('')
+      showMessage(`Added blog "${blogObject.title}"`)
 
     } catch (exception) {
-      console.log("ERROR:", exception)
+      showMessage(`Error: ${exception}`, false)
       }
-
     }
 
-  
+  const showMessage = (message, successNotification=true) => {
+    setNotification(message)
+    setSuccess(successNotification)
+    
+    setTimeout(() => {
+      setNotification(null)
+      setSuccess(null)
+    }, 5000)
+  }
 
-  if (user === null)
-    return (
-      <div>
-        {LoginForm(handleLogin, username, setUsername, password, setPassword)}
-      </div>
-    )
-  else 
-      return (
-        <>
-        <div>{user.name} logged in</div>
-        <div>{LogoutButton(handleLogout)}</div>
-        <h2>Blogs</h2>
-        <div>{AddBlog(addBlogEntry, newTitle, handleNewTitle, newAuthor, handleNewAuthor, newUrl, handleNewUrl)}</div>
-        <br/>
-        <div>
-          {blogs.map(blog =>
-            <ListBlogs key={blog.id} blog={blog} />
-          )}
-        </div>
-        </>
-      )
+  const loginFormJSX = () => (
+    <div>
+    {LoginForm(handleLogin, username, setUsername, password, setPassword)}
+  </div>
+  )
+
+  const blogsJSX = () => (
+    <>
+    <div>{user.name} logged in</div>
+    <div>{LogoutButton(handleLogout)}</div>
+    <h2>Blogs</h2>
+    <div>{AddBlog(addBlogEntry, newTitle, handleNewTitle, newAuthor, handleNewAuthor, newUrl, handleNewUrl)}</div>
+    <br/>
+    <div>
+      {blogs.map(blog =>
+        <ListBlogs key={blog.id} blog={blog} />
+      )}
+    </div>
+    </>
+  )
+
+  return (
+    <>
+      <div>{Notification(notification, success)}</div>
+      <h1>Blog List</h1>
+      {!user ? loginFormJSX() : blogsJSX()}
+    </>)
+
+ 
 }
 
 export default App
