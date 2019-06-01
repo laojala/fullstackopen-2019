@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import ListBlogs from './components/ListBlogs'
+import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import LogoutButton from './components/LogoutButton'
 import AddBlog from './components/AddBlog'
@@ -133,7 +133,7 @@ const App = () => {
     <br/>
     <div>
       {blogs.map(blog =>
-        <ListBlogs key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} />
       )}
     </div>
     </>
