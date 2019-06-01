@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import Blog from './components/Blog'
-import LoginForm from './components/LoginForm'
-import LogoutButton from './components/LogoutButton'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import ListBlogs from './components/ListBlogs'
+import LoginForm from './components/LoginForm'
+import LogoutButton from './components/LogoutButton'
+import AddBlog from './components/AddBlog'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -63,13 +64,14 @@ const App = () => {
   else 
       return (
         <>
+        <div>{user.name} logged in</div>
         <div>{LogoutButton(handleLogout)}</div>
         <h2>Blogs</h2>
-        <div>{user.name} logged in</div>
+        <AddBlog />
         <br/>
         <div>
           {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
+            <ListBlogs key={blog.id} blog={blog} />
           )}
         </div>
         </>
