@@ -25,6 +25,9 @@ const App = () => {
   const [newAuthor, setAuthor] = useState('')
   const [newUrl, setUrl] = useState('')
 
+  const blogFormRef = React.createRef()
+
+
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
@@ -89,6 +92,8 @@ const App = () => {
 
     try {
       const newBlog = await blogService.create(blogObject)
+
+      blogFormRef.current.toggleVisibility()
       
       setBlogs(blogs.concat(newBlog))
       setTitle('')
@@ -122,7 +127,7 @@ const App = () => {
     <div>{user.name} logged in</div>
     <div>{LogoutButton(handleLogout)}</div>
     <h2>Blogs</h2>
-    <Togglable buttonLabel='Add blog'>
+    <Togglable buttonLabel='Add blog' ref={blogFormRef}>
       <div>{AddBlog(addBlogEntry, newTitle, handleNewTitle, newAuthor, handleNewAuthor, newUrl, handleNewUrl)}</div>
     </Togglable>
     <br/>
