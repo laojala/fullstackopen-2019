@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, usersToBlog }) => {
   const [visible, setVisible] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
 
@@ -12,13 +12,14 @@ const Blog = ({ blog }) => {
   }
 
   const handleLike = async () => {
-    console.log(blog.likes)
     blog.likes += 1
     setLikes(blog.likes)
-    console.log('new likes', blog.likes)
     blogService.update(blog)
+  }
 
-    
+  const user = () => {
+    const userId = blog.user
+    return usersToBlog.find(user => user.id === userId).name
   }
 
   const blogStyle = {
@@ -44,7 +45,7 @@ const Blog = ({ blog }) => {
           {likes} likes
           <button style={buttonStyle} onClick={handleLike}>like</button>
         </div>
-        <div>Added by: _todo_</div>
+        <div>Added by: {user()}</div>
       </div>
     </div>
   )

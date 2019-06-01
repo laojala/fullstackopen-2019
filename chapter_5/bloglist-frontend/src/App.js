@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import userService from './services/users'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import LogoutButton from './components/LogoutButton'
@@ -10,6 +11,7 @@ import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
+  const [users, setUsers] = useState([])
 
   //login
   const [username, setUsername] = useState('') 
@@ -27,6 +29,13 @@ const App = () => {
 
   const blogFormRef = React.createRef()
 
+ 
+  // fetches users who added blogs to the list
+  useEffect(() => {
+    userService.getAll().then(users =>
+      setUsers( users )
+    )  
+  }, [])
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -133,7 +142,7 @@ const App = () => {
     <br/>
     <div>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} usersToBlog={users} />
       )}
     </div>
     </>
