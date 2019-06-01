@@ -1,17 +1,24 @@
-import React, { useState } from 'react' 
+import React, { useState } from 'react'
+import blogService from '../services/blogs'
 
 const Blog = ({ blog }) => {
   const [visible, setVisible] = useState(false)
+  const [likes, setLikes] = useState(blog.likes)
 
-  const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
 
   const toggleVisibility = () => {
     setVisible(!visible)
   }
 
-  const handleLike = () => {
-    console.log('button clicked')
+  const handleLike = async () => {
+    console.log(blog.likes)
+    blog.likes += 1
+    setLikes(blog.likes)
+    console.log('new likes', blog.likes)
+    blogService.update(blog)
+
+    
   }
 
   const blogStyle = {
@@ -34,10 +41,10 @@ const Blog = ({ blog }) => {
       <div style={showWhenVisible}>
         <div><a href={blog.url} target="_blank" rel="noopener noreferrer">{blog.url}</a></div>
         <div>
-          {blog.likes} likes
+          {likes} likes
           <button style={buttonStyle} onClick={handleLike}>like</button>
         </div>
-        <div>Added by: {blog.user}</div>
+        <div>Added by: _todo_</div>
       </div>
     </div>
   )
