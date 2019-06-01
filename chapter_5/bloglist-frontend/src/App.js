@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
+import LogoutButton from './components/LogoutButton'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -16,25 +17,40 @@ const App = () => {
     )  
   }, [])
 
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
+    }
+  }, [])
+
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
       const user = await loginService.login({
         username, password,
       })
-      console.log('Login successful', username)
+
+      window.localStorage.setItem(
+        'loggedBlogappUser', JSON.stringify(user)
+      ) 
       setUser(user)
       setUsername('')
       setPassword('')
-      console.log('User:', user)
     } catch (exception) {
       console.log("ERROR:", exception)
-      console.log('User:', user)
       // setErrorMessage('käyttäjätunnus tai salasana virheellinen')
       // setTimeout(() => {
       //   setErrorMessage(null)
       // }, 5000)
     }
+  }
+
+  const handleLogout = () => {
+    window.localStorage.clear()
+    setUser(null)
   }
 
 
@@ -47,6 +63,7 @@ const App = () => {
   else 
       return (
         <>
+        <div>{LogoutButton(handleLogout)}</div>
         <h2>Blogs</h2>
         <div>{user.name} logged in</div>
         <br/>
