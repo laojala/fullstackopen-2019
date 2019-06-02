@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 
 const Blog = ({ blog, users, user, handleNewLike, removeBlog }) => {
   const [visible, setVisible] = useState(false)
@@ -16,7 +17,7 @@ const Blog = ({ blog, users, user, handleNewLike, removeBlog }) => {
 
   const displayRemoveForUserWhoAdded = () => {
     const nameWhoAdded = users.find(user => user.id === blog.user).username
-    
+
     if(nameWhoAdded === user.username)
       return <button onClick={removeBlog}>Remove</button>
   }
@@ -49,6 +50,14 @@ const Blog = ({ blog, users, user, handleNewLike, removeBlog }) => {
       </div>
     </div>
   )
+}
+
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  users: PropTypes.array.isRequired,
+  user: PropTypes.object.isRequired,
+  handleNewLike: PropTypes.func.isRequired,
+  removeBlog: PropTypes.func.isRequired,
 }
 
 export default Blog
