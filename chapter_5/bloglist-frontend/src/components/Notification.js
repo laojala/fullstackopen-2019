@@ -21,24 +21,24 @@ const Notification = (message, success) => {
 }
 
 var styles = ({
-    success: {
-        color: 'green',
-        background: 'lightgrey',
-        borderStyle: 'solid',
-        borderRadius: 5,
-        padding: 10,
-        marginBottom: 10,
-
-    },
-    fail: {
-      color: 'red',
-      background: 'lightgrey',
-      borderStyle: 'solid',
-      borderRadius: 5,
-      padding: 10,
-      marginBottom: 10,
+  success: {
+    color: 'green',
+    background: 'lightgrey',
+    borderStyle: 'solid',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
 
   },
-  })
+  fail: {
+    color: 'red',
+    background: 'lightgrey',
+    borderStyle: 'solid',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+
+  },
+})
 
 export default Notification

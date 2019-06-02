@@ -9,12 +9,13 @@ import AddBlog from './components/AddBlog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [users, setUsers] = useState([])
 
   //login
-  const [username, setUsername] = useState('') 
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
@@ -44,7 +45,7 @@ const App = () => {
     }
 
     fetchData()
-  
+
   }, [])
 
   useEffect(() => {
@@ -65,7 +66,7 @@ const App = () => {
 
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
-      ) 
+      )
       setUser(user)
       setUsername('')
       setPassword('')
@@ -73,8 +74,8 @@ const App = () => {
 
 
     } catch (exception) {
-      console.log("ERROR:", exception)
-      showMessage(`Incorrect username or password`, false)
+      console.log('ERROR:', exception)
+      showMessage('Incorrect username or password', false)
     }
   }
 
@@ -84,15 +85,15 @@ const App = () => {
   }
 
   const handleNewTitle = (event) => {
-    setTitle(event.target.value)  
+    setTitle(event.target.value)
   }
 
   const handleNewAuthor = (event) => {
-    setAuthor(event.target.value)  
+    setAuthor(event.target.value)
   }
 
   const handleNewUrl = (event) => {
-    setUrl(event.target.value)  
+    setUrl(event.target.value)
   }
 
   const addBlogEntry = async (event) => {
@@ -107,7 +108,7 @@ const App = () => {
       const newBlog = await blogService.create(blogObject)
 
       blogFormRef.current.toggleVisibility()
-      
+
       setBlogs(blogs.concat(newBlog))
       setTitle('')
       setAuthor('')
@@ -116,8 +117,8 @@ const App = () => {
 
     } catch (exception) {
       showMessage(`Error: ${exception}`, false)
-      }
     }
+  }
 
   const handleLike = async (id) => {
 
@@ -127,17 +128,17 @@ const App = () => {
     setBlogs(newBlogs.sort((a, b) => b.likes - a.likes))
 
     setBlogs(newBlogs)
-    blogService.update(blog) 
+    blogService.update(blog)
   }
 
   const removeBlog = async (blog) => {
 
-    if (window.confirm(`Remove ${blog.title}?`)) { 
+    if (window.confirm(`Remove ${blog.title}?`)) {
       try {
         await blogService.remove(blog.id)
         setBlogs(blogs.filter(item => item.id !== blog.id ))
         showMessage(`Blog ${blog.title} removed`)
-      }  
+      }
       catch (error) {
         showMessage(`Could not remove blog: "${blog.title}"`, false)
       }
@@ -147,7 +148,7 @@ const App = () => {
   const showMessage = (message, successNotification=true) => {
     setNotification(message)
     setSuccess(successNotification)
-    
+
     setTimeout(() => {
       setNotification(null)
       setSuccess(null)
@@ -156,8 +157,8 @@ const App = () => {
 
   const loginFormJSX = () => (
     <div>
-    {LoginForm(handleLogin, username, setUsername, password, setPassword)}
-  </div>
+      {LoginForm(handleLogin, username, setUsername, password, setPassword)}
+    </div>
   )
 
   const blogsJSX = () => (
@@ -171,7 +172,7 @@ const App = () => {
     <br/>
     <div>
       {blogs.map(blog =>
-        <Blog 
+        <Blog
           key={blog.id}
           blog={blog}
           users={users}
@@ -183,7 +184,7 @@ const App = () => {
     </>
   )
 
- 
+
   return (
     <>
       <div>{Notification(notification, success)}</div>
@@ -191,7 +192,7 @@ const App = () => {
       {!user ? loginFormJSX() : blogsJSX()}
     </>)
 
- 
+
 }
 
 export default App

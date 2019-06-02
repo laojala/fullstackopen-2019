@@ -1,21 +1,21 @@
 import React from 'react'
 
 const AddBlog = (addEntry, title, handleNewTitle, author, handleNewAuthor, url, handleNewUrl) => {
-      
-    return  <>
+
+  return  <>
       <form onSubmit={addEntry}>
         <label>
-          Title: 
+          Title:
           <input value={title} onChange={handleNewTitle} />
         </label>
         <br/>
         <label>
-          Author: 
+          Author:
           <input value={author}onChange={handleNewAuthor} />
         </label>
         <br/>
         <label>
-          Url: 
+          Url:
           <input value={url}onChange={handleNewUrl} />
         </label>
         <br/>
