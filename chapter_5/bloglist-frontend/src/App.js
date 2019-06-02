@@ -29,18 +29,22 @@ const App = () => {
 
   const blogFormRef = React.createRef()
 
- 
-  // fetches users who added blogs to the list
-  useEffect(() => {
-    userService.getAll().then(users =>
-      setUsers( users )
-    )  
-  }, [])
+  useEffect( () => {
 
-  useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
+    let usersData = []
+    let blogsData = []
+
+    async function fetchData() {
+      usersData = await userService.getAll()
+      blogsData = await blogService.getAll()
+
+      setUsers(usersData)
+      setBlogs(blogsData)
+
+    }
+
+    fetchData()
+  
   }, [])
 
   useEffect(() => {
