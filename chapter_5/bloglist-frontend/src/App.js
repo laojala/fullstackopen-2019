@@ -120,17 +120,29 @@ const App = () => {
     }
 
   const handleLike = async (id) => {
-    
+
     const blog = blogs.find(blog => blog.id === id)
-    blog.likes++
+    blog.likes += 1
     const newBlogs = [...blogs]
     setBlogs(newBlogs.sort((a, b) => b.likes - a.likes))
 
     setBlogs(newBlogs)
-    blogService.update(blog)
-  
-    }
+    blogService.update(blog) 
+  }
 
+  const removeBlog = async (blog) => {
+    
+    if (window.confirm(`Remove ${blog.title}?`)) { 
+      try {
+        await blogService.remove(blog.id)
+        setBlogs(blogs.filter(item => item.id !== blog.id ))
+        showMessage(`Blog ${blog.title} removed`)
+      }  
+      catch (error) {
+        showMessage(`Could not remove blog: "${blog.title}"`, false)
+      }
+    }
+  }
 
   const showMessage = (message, successNotification=true) => {
     setNotification(message)
@@ -163,7 +175,8 @@ const App = () => {
           key={blog.id}
           blog={blog}
           usersToBlog={users}
-          handleNewLike={() => handleLike(blog.id)} />
+          handleNewLike={() => handleLike(blog.id)}
+          removeBlog = {() => removeBlog(blog)} />
       )}
     </div>
     </>
