@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const Blog = ({ blog, usersToBlog, handleNewLike, removeBlog }) => {
+const Blog = ({ blog, users, user, handleNewLike, removeBlog }) => {
   const [visible, setVisible] = useState(false)
 
   const showWhenVisible = { display: visible ? '' : 'none' }
@@ -9,9 +9,16 @@ const Blog = ({ blog, usersToBlog, handleNewLike, removeBlog }) => {
     setVisible(!visible)
   }
 
-  const user = () => {
+  const userForBlog = () => {
     const userId = blog.user
-    return usersToBlog.find(user => user.id === userId).name
+    return users.find(user => user.id === userId).name
+  }
+
+  const displayRemoveForUserWhoAdded = () => {
+    const nameWhoAdded = users.find(user => user.id === blog.user).username
+    
+    if(nameWhoAdded === user.username)
+      return <button onClick={removeBlog}>Remove</button>
   }
 
   const blogStyle = {
@@ -37,8 +44,8 @@ const Blog = ({ blog, usersToBlog, handleNewLike, removeBlog }) => {
           {blog.likes} likes
           <button style={buttonStyle} onClick={handleNewLike}>like</button>
         </div>
-        <div>Added by: {user()}</div>
-        <div><button onClick={removeBlog}>Remove</button></div>
+        <div>Added by: {userForBlog()}</div>
+        <div>{displayRemoveForUserWhoAdded()}</div>
       </div>
     </div>
   )

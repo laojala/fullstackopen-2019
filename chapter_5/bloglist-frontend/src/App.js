@@ -131,7 +131,7 @@ const App = () => {
   }
 
   const removeBlog = async (blog) => {
-    
+
     if (window.confirm(`Remove ${blog.title}?`)) { 
       try {
         await blogService.remove(blog.id)
@@ -174,7 +174,8 @@ const App = () => {
         <Blog 
           key={blog.id}
           blog={blog}
-          usersToBlog={users}
+          users={users}
+          user={user}
           handleNewLike={() => handleLike(blog.id)}
           removeBlog = {() => removeBlog(blog)} />
       )}
