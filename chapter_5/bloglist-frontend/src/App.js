@@ -39,7 +39,7 @@ const App = () => {
       blogsData = await blogService.getAll()
 
       setUsers(usersData)
-      setBlogs(blogsData)
+      setBlogs(blogsData.sort((a, b) => b.likes - a.likes))
 
     }
 
@@ -119,6 +119,19 @@ const App = () => {
       }
     }
 
+  const handleLike = async (id) => {
+    
+    const blog = blogs.find(blog => blog.id === id)
+    blog.likes++
+    const newBlogs = [...blogs]
+    setBlogs(newBlogs.sort((a, b) => b.likes - a.likes))
+
+    setBlogs(newBlogs)
+    blogService.update(blog)
+  
+    }
+
+
   const showMessage = (message, successNotification=true) => {
     setNotification(message)
     setSuccess(successNotification)
@@ -146,12 +159,17 @@ const App = () => {
     <br/>
     <div>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} usersToBlog={users} />
+        <Blog 
+          key={blog.id}
+          blog={blog}
+          usersToBlog={users}
+          handleNewLike={() => handleLike(blog.id)} />
       )}
     </div>
     </>
   )
 
+ 
   return (
     <>
       <div>{Notification(notification, success)}</div>
