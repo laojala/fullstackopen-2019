@@ -36,10 +36,10 @@ const Blog = ({ blog, users, user, handleNewLike, removeBlog }) => {
 
   return (
     <div style={blogStyle}>
-      <div onClick={toggleVisibility}>
+      <div onClick={toggleVisibility} data-testid="always_visible">
         {blog.title} {blog.author}
       </div>
-      <div style={showWhenVisible}>
+      <div style={showWhenVisible} data-testid="toggleable">
         <div><a href={blog.url} target="_blank" rel="noopener noreferrer">{blog.url}</a></div>
         <div>
           {blog.likes} likes
