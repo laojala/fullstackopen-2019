@@ -4,6 +4,9 @@ import 'jest-dom/extend-expect'
 //import { prettyDOM } from 'dom-testing-library'
 import SimpleBlog from './SimpleBlog'
 
+//to run tests once:  CI=true npm test
+//to run tests in watch mode: npm test
+
 afterEach(cleanup)
 
 const blog = {
@@ -14,22 +17,24 @@ const blog = {
 
 test('renders content', () => {
 
+  const sel = id => `[data-testid="${id}"]`
+
   const component = render(
     <SimpleBlog blog={blog} />
   )
 
-  const title = component.container.querySelector('.title')
+  const title = component.container.querySelector(sel('title'))
   expect(title).toHaveTextContent(
     'Blog title'
   )
 
-  const author = component.container.querySelector('.author')
+  const author =  component.container.querySelector(sel('author'))
   expect(author).toHaveTextContent(
     'Some Person'
   )
 
-  const likesRow = component.container.querySelector('.likesRow')
-  expect(likesRow).toHaveTextContent(
+  const likesText = component.container.querySelector(sel('likesRow'))
+  expect(likesText).toHaveTextContent(
     `blog has ${blog.likes} likes`
   )
 })
