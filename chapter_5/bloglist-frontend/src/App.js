@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import  { useField } from './hooks'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import userService from './services/users'
@@ -14,9 +15,9 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const [users, setUsers] = useState([])
 
-  //login
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+
+  const username = useField('text')
+  const password = useField('password')
   const [user, setUser] = useState(null)
 
   //notifications
@@ -59,17 +60,16 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
+
     try {
       const user = await loginService.login({
-        username, password,
+        username: username.value, password: password.value,
       })
 
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
       )
       setUser(user)
-      setUsername('')
-      setPassword('')
       showMessage('Logged in')
 
 
@@ -157,7 +157,7 @@ const App = () => {
 
   const loginFormJSX = () => (
     <div>
-      {LoginForm(handleLogin, username, setUsername, password, setPassword)}
+      {LoginForm(handleLogin, username, password)}
     </div>
   )
 
