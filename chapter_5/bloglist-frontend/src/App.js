@@ -70,8 +70,9 @@ const App = () => {
         'loggedBlogappUser', JSON.stringify(user)
       )
       setUser(user)
+      username.reset()
+      password.reset()
       showMessage('Logged in')
-
 
     } catch (exception) {
       console.log('ERROR:', exception)
