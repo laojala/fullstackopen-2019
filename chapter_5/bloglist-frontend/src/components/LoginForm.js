@@ -9,11 +9,11 @@ const LoginForm = (handleLogin, username, password) => (
         <form onSubmit={handleLogin}>
           <div>
             Username:
-            <input {...username} /> 
+            <input {...username.omitreset} /> 
           </div>
           <div>
             Password:
-            <input {...password} /> 
+            <input {...password.omitreset} /> 
           </div>
           <button type="submit">Login</button>
         </form>
