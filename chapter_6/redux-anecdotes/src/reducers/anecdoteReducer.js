@@ -29,8 +29,16 @@ const reducer = (state = initialState, action) => {
       likedAnecdote.votes++
       console.log(likedAnecdote)
       return state.map(item => item.id === action.data.id ? likedAnecdote : item)
-    default: 
-      return state
+    case 'NEW_ANECDOTE':
+      const newAnecdote =  {
+        content: action.data.content,
+        id: getId(),
+        votes: 0
+      }
+      console.log('new:',newAnecdote)
+      return [...state,newAnecdote]
+      default: 
+        return state
   }
 }
 
