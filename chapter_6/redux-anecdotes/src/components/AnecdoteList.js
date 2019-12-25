@@ -16,17 +16,21 @@ const AnecdoteList = ({ store }) => {
   
   return (
     <div>
-        {store.getState().anecdotes.map(anecdote =>    
-            <div key={anecdote.id}>
-                <div>
-                    {anecdote.content}
-                </div>
-                <div>
-                    has {anecdote.votes}
-                    <button onClick={() => voteForId(anecdote.id, anecdote.content)}>vote</button>
-                </div>
-            </div>
-        )}
+        {store.getState().anecdotes.map(anecdote => {
+            if (anecdote.content.includes(store.getState().filter))
+                return (
+                    <div key={anecdote.id}>
+                        <div>
+                            {anecdote.content}
+                        </div>
+                        <div>
+                            has {anecdote.votes}
+                            <button onClick={() => voteForId(anecdote.id, anecdote.content)}>vote</button>
+                        </div>
+                    </div>
+                )
+            else return <div/>
+        })}
     </div>
     
   )

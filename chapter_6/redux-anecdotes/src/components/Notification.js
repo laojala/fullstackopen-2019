@@ -11,7 +11,7 @@ const Notification = ({ store }) => {
   }
   return (
 
-    currentNotification ?  <div style={style}>{currentNotification}</div> : <div></div>
+    currentNotification ? <div style={style}>{currentNotification}</div> : <div></div>
   )
 }
 

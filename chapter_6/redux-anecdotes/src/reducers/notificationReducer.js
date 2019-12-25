@@ -3,6 +3,8 @@ const initialNotification = null
 
 const notificationReducer = (state = initialNotification, action) => {
 
+  console.log("STATE: ", state)
+
   switch (action.type) {
     case 'NOTIFICATION_VOTE':
       if (action.data === null)
