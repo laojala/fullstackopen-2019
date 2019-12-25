@@ -1,15 +1,22 @@
 import React from 'react'
 
 import { addAnecdote } from '../reducers/anecdoteReducer'
+import { setAddNotification } from '../reducers/notificationReducer'
 
-  const AddAnecdote = (props) => {
+  const AddAnecdote = ({ store }) => {
+
     const newAnecdote = (event) => {
       event.preventDefault()
       const content = event.target.content.value
       event.target.content.value = ''
-      props.store.dispatch(
+      store.dispatch(
         addAnecdote(content)
       )
+
+      //display alert:
+      store.dispatch(setAddNotification(content))
+      setTimeout(() => store.dispatch(setAddNotification(null)), 5000)
+
     }
   
   return (

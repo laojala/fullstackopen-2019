@@ -1,13 +1,17 @@
 import React from 'react'
 
 import { vote } from '../reducers/anecdoteReducer'
+import { setVoteNotification } from '../reducers/notificationReducer'
 
 const AnecdoteList = ({ store }) => {
     
-    const voteForId = (id) => {
-        store.dispatch(
-            vote(id)
-          )
+    const voteForId = (id, content) => {
+        store.dispatch(vote(id))
+
+        //display alert:
+        store.dispatch(setVoteNotification(content))
+        setTimeout(() => 
+        store.dispatch(setVoteNotification(null)), 5000)
       }
   
   return (
@@ -19,7 +23,7 @@ const AnecdoteList = ({ store }) => {
                 </div>
                 <div>
                     has {anecdote.votes}
-                    <button onClick={() => voteForId(anecdote.id)}>vote</button>
+                    <button onClick={() => voteForId(anecdote.id, anecdote.content)}>vote</button>
                 </div>
             </div>
         )}
