@@ -5,8 +5,6 @@ const Notification = (props) => {
 
   const currentNotification = props.notification
 
-  console.log("CURREEEENT: ", props.notification)
-
   const style = {
     border: 'solid',
     padding: 10,
