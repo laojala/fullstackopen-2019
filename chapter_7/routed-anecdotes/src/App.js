@@ -18,7 +18,6 @@ const Menu = () => {
 }
 
 const AnecdoteList = (props) => {
-  console.log(props)
   props.setRedirect(false)
   return (
   <div>
@@ -60,9 +59,17 @@ const Footer = () => (
   <div>
     Anecdote app for <a href='https://courses.helsinki.fi/fi/tkt21009'>Full Stack -sovelluskehitys</a>.
 
-    See <a href='https://github.com/fullstack-hy2019/routed-anecdotes/blob/master/src/App.js'>https://github.com/fullstack-hy2019/routed-anecdotes/blob/master/src/App.js</a> for the source code.
+    See <a href='https://github.com/fullstack-hy2019/routed-anecdotes/blob/master/src/App.js'>https://github.com/fullstack-hy2019/routed-anecdotes/blob/master/src/App.js</a> for the original source code.
+    <div>And <a href='https://github.com/laojala/fullstackopen-2019/tree/master/chapter_7/routed-anecdotes'>https://github.com/laojala/fullstackopen-2019/tree/master/chapter_7/routed-anecdotes</a> for modified code (current functionality).</div>
   </div>
 )
+
+const Notification = (message) => {
+  return (
+    <div>
+      {message ? <div>{message}</div> : <div></div>}
+    </div>
+)}
 
 const CreateNew = (props) => {
   const [content, setContent] = useState('')
@@ -121,14 +128,23 @@ const App = () => {
     }
   ])
 
-  const [notification, setNotification] = useState('')
+  const [notification, setNotification] = useState(null)
   const [redirectToHome, setRedirectToHome] = useState(false)
 
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
     setRedirect(true)
+    displayNotification(anecdote.content)
   }
+
+  const displayNotification = (message) => {
+    setNotification(`New anecdote added: ${message}`)
+    
+    setTimeout(() => {
+      setNotification(null)
+    }, 10000)
+  } 
 
   const setRedirect = (boolean) =>
     setRedirectToHome(boolean)
@@ -152,6 +168,7 @@ const App = () => {
       <Router>
         <h1>Software anecdotes</h1>
         <Menu />
+        {Notification(notification)}
         <Route exact path="/" render={() => <AnecdoteList anecdotes={anecdotes} setRedirect={setRedirect} />} />
         <Route path="/about" render={() => <About />} />
         <Route path="/create" render={() => 
