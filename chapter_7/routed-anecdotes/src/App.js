@@ -17,23 +17,23 @@ const Menu = () => {
   )
 }
 
-const AnecdoteList = ({ anecdotes }) => (
+const AnecdoteList = (props) => {
+  console.log(props)
+  props.setRedirect(false)
+  return (
   <div>
     <h2>Anecdotes</h2>
     <ul>
-      {anecdotes.map(anecdote =>
+      {props.anecdotes.map(anecdote =>
         <li key={anecdote.id}>
           <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
         </li>
       )}
     </ul>
   </div>
-)
+)}
 
 const Anecdote = ({ anecdote }) => {
-
-  console.log(anecdote)
-  console.log("HEREE:", anecdote.content)
   
   return (
   <div>
@@ -122,11 +122,16 @@ const App = () => {
   ])
 
   const [notification, setNotification] = useState('')
+  const [redirectToHome, setRedirectToHome] = useState(false)
 
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
+    setRedirect(true)
   }
+
+  const setRedirect = (boolean) =>
+    setRedirectToHome(boolean)
 
   const anecdoteById = (id) =>
     anecdotes.find(a => a.id === id)
@@ -147,12 +152,13 @@ const App = () => {
       <Router>
         <h1>Software anecdotes</h1>
         <Menu />
-        <Route exact path="/" render={() => <AnecdoteList anecdotes={anecdotes} />} />
+        <Route exact path="/" render={() => <AnecdoteList anecdotes={anecdotes} setRedirect={setRedirect} />} />
         <Route path="/about" render={() => <About />} />
-        <Route path="/create" render={() => <CreateNew addNew={addNew} />} />
-        
-        <Route exact path="/anecdoteds" render={() =>
-          <AnecdoteList anecdotes={anecdotes} />
+        <Route path="/create" render={() => 
+          !redirectToHome ? <CreateNew addNew={addNew}/> : <Redirect to="/" />
+        } />
+        <Route exact path="/anecdotes" render={() =>
+          <AnecdoteList anecdotes={anecdotes} setRedirect={setRedirect} />
         } />
         <Route exact path="/anecdotes/:id" render={({ match }) =>
           <Anecdote anecdote={anecdoteById(match.params.id)} />
