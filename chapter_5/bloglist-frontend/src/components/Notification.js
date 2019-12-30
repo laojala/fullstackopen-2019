@@ -1,21 +1,22 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
-const Notification = (message, success) => {
+const Notification = (props) => {
 
-  if (message === null) {
-    return null
+  if (props.notification === undefined || props.notification === null) {
+    return <div></div>
   }
 
-  if (success)
+  if (props.success)
     return (
       <div className="success" style={styles.success}>
-        {message}
+        {props.notification}
       </div>
     )
   else
     return (
       <div className="success" style={styles.fail}>
-        {message}
+        {props.notification}
       </div>
     )
 }
@@ -41,4 +42,11 @@ var styles = ({
   },
 })
 
-export default Notification
+const mapStateToProps = (state) => {
+  return {
+    notification: state.notification.notification,
+    success: state.notification.success,
+  }
+}
+
+export default connect(mapStateToProps)(Notification)

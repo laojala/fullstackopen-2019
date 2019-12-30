@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
 import  { useField } from './hooks'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -9,9 +10,10 @@ import LogoutButton from './components/LogoutButton'
 import AddBlog from './components/AddBlog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
+import { setNotification } from './reducers/notificationReducer'
 
 
-const App = () => {
+const App = (props) => {
   const [blogs, setBlogs] = useState([])
   const [users, setUsers] = useState([])
 
@@ -19,10 +21,6 @@ const App = () => {
   const username = useField('text')
   const password = useField('password')
   const [user, setUser] = useState(null)
-
-  //notifications
-  const [ notification, setNotification] = useState(null)
-  const [ success, setSuccess] = useState(null)
 
   //add new blog
   const [newTitle, setTitle] = useState('')
@@ -147,13 +145,7 @@ const App = () => {
   }
 
   const showMessage = (message, successNotification=true) => {
-    setNotification(message)
-    setSuccess(successNotification)
-
-    setTimeout(() => {
-      setNotification(null)
-      setSuccess(null)
-    }, 5000)
+    props.setNotification(message, successNotification)
   }
 
   const loginFormJSX = () => (
@@ -188,12 +180,16 @@ const App = () => {
 
   return (
     <>
-      <div>{Notification(notification, success)}</div>
+      <div><Notification /></div>
       <h1>Blog List</h1>
       {!user ? loginFormJSX() : blogsJSX()}
     </>)
 
-
 }
 
-export default App
+const mapDispatchToProps = {
+  setNotification,
+}
+
+
+export default connect(null, mapDispatchToProps)(App)
