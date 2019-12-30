@@ -4,8 +4,8 @@ React apps for https://fullstackopen-2019.github.io/
 ##  Excercises for [Chapter 7](https://fullstackopen.com/en/part7/exercises_extending_the_bloglist) - Extending the bloglist
 
 
-- [ ] 7.4: redux, step1
-- [ ] 7.5: redux, step2
+- [x] 7.4: redux, step1
+- [x] 7.5: redux, step2
 - [ ] 7.6 redux, step3
 - [ ] 7.7 Users view
 - [ ] 7.8 Individual user view
