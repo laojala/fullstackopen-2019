@@ -51,7 +51,13 @@ const AllBlogs = (props) => {
       props.setNotification(`Blog "${blog.title}" removed`, true)
   }
 
-  return (
+  if (props.users.length === 0 || props.user.length === 0)
+    return (<>
+      {console.log("Loading users...")}
+      <div>Loading users...</div></>
+    )
+  else
+    return (
       <>
       <h2>Blogs</h2>
       <Togglable buttonLabel='Add blog' ref={blogFormRef}>
