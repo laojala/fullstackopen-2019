@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import  { useField } from './hooks'
 import blogService from './services/blogs'
-import AllBlogs from './components/AllBlogs'
+import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
 import LogoutButton from './components/LogoutButton'
 import Notification from './components/Notification'
@@ -71,7 +71,7 @@ const App = (props) => {
         <>
           <div>{props.loggedInUser.name} logged in</div>
           <div>{LogoutButton(handleLogout)}</div>
-          <AllBlogs allUsers={props.allUsers}/>
+          <BlogList allUsers={props.allUsers}/>
         </>}
     </>)
 

@@ -6,7 +6,6 @@ const loggedInUserReducer = (state = null, action) => {
     case 'LOGIN':
       return action.data
     case 'ALREADY_LOGGED_IN':
-      console.log("hello from this side!")
       return action.data
     case 'LOGOUT':
         return null
@@ -33,8 +32,6 @@ export const handleLogin = (username, password) => {
         console.log('ERROR:', exception)
         //showMessage('Incorrect username or password', false)
       }
-
-      console.log("USER IN INITIAL LOGIN", loggingUser)
       dispatch({
         type: 'LOGIN',
         data: loggingUser,

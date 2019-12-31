@@ -6,9 +6,7 @@ import AddBlog from './AddBlog'
 import { setNotification } from '../reducers/notificationReducer'
 import { addEntry, handleLike, removeBlog } from '../reducers/blogsReducer'
 
-
-
-const AllBlogs = (props) => {
+const BlogList = (props) => {
 
   //add new blog
   const [newTitle, setTitle] = useState('')
@@ -97,4 +95,4 @@ const AllBlogs = (props) => {
     removeBlog
   }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AllBlogs)
+export default connect(mapStateToProps, mapDispatchToProps)(BlogList)
