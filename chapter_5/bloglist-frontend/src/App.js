@@ -3,18 +3,16 @@ import { connect } from 'react-redux'
 import  { useField } from './hooks'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import userService from './services/users'
 import AllBlogs from './components/AllBlogs'
 import LoginForm from './components/LoginForm'
 import LogoutButton from './components/LogoutButton'
 import Notification from './components/Notification'
 import { setNotification } from './reducers/notificationReducer'
 import { initializeBlogs } from './reducers/blogsReducer'
+import { getAllUsers } from './reducers/allUsersResucer'
 
 
 const App = (props) => {
-
-  const [users, setUsers] = useState([])
 
   const username = useField('text')
   const password = useField('password')
@@ -22,11 +20,8 @@ const App = (props) => {
 
   useEffect( () => {
 
-    let usersData = []
-
     async function fetchData() {
-      usersData = await userService.getAll()
-      setUsers(usersData)
+      await props.getAllUsers()
     }
 
     async function fetchBlogs() {
@@ -93,7 +88,7 @@ const App = (props) => {
         <>
           <div>{user.name} logged in</div>
           <div>{LogoutButton(handleLogout)}</div>
-          <AllBlogs users={users} user={user}/>
+          <AllBlogs allUsers={props.allUsers} user={user}/>
         </>}
     </>)
 
@@ -102,12 +97,14 @@ const App = (props) => {
 const mapStateToProps = (state) => {
   return {
     blogs: state.blogs,
+    allUsers: state.allUsers
   }
 }
 
 const mapDispatchToProps = {
   setNotification,
   initializeBlogs,
+  getAllUsers
 }
 
 

@@ -51,7 +51,7 @@ const AllBlogs = (props) => {
       props.setNotification(`Blog "${blog.title}" removed`, true)
   }
 
-  if (props.users.length === 0 || props.user.length === 0)
+  if (props.allUsers.length === 0 || props.user.length === 0)
     return (<>
       {console.log("Loading users...")}
       <div>Loading users...</div></>
@@ -69,7 +69,7 @@ const AllBlogs = (props) => {
           <Blog
             key={blog.id}
             blog={blog}
-            users={props.users}
+            users={props.allUsers}
             user={props.user}
             handleNewLike={() => props.handleLike(blog.id)}
             removeBlog = {() => removeBlogEntry(blog)} />
