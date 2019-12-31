@@ -9,9 +9,9 @@ const LogoutButton = (props) => {
   }
   
   return (
-    <div>
+    <>
       <button type="submit" onClick={handleLogout}>Logout</button>
-    </div>
+    </>
   )
 }
 

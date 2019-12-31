@@ -1,10 +1,16 @@
 import React, { useEffect } from 'react'
 import { connect, useDispatch } from 'react-redux'
+import {
+  BrowserRouter as Router,
+  Route, Link, Redirect, withRouter
+} from 'react-router-dom'
+
 import blogService from './services/blogs'
 import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
-import LogoutButton from './components/LogoutButton'
 import Notification from './components/Notification'
+import Menu from './components/Menu'
+import Users from './components/Users'
 import { initializeBlogs } from './reducers/blogsReducer'
 import { getAllUsers } from './reducers/allUsersResucer'
 import { setAlreadyLogged } from './reducers/loggedInUserReducer'
@@ -34,17 +40,18 @@ const App = (props) => {
     }
   },[dispatch])
 
+//<Route exact path="/" render={() => <Home />} />
+
   return (
-    <>
+    <Router>
       <div><Notification /></div>
-      <h1>Blog List</h1>
       {!props.loggedInUser ? <LoginForm/>: 
         <>
-          <div>{props.loggedInUser.name} logged in</div>
-          <div><LogoutButton/></div>
-          <BlogList allUsers={props.allUsers}/>
+          <Menu name={props.loggedInUser.name}/>
+          <Route exact path="/" render={() => <BlogList allUsers={props.allUsers}/>} />
+          <Route exact path="/users" render={() => <Users />} />    
         </>}
-    </>)
+    </Router>)
 
 }
 
