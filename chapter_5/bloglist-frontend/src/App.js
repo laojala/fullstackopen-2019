@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import  { useField } from './hooks'
 import blogService from './services/blogs'
-import loginService from './services/login'
 import AllBlogs from './components/AllBlogs'
 import LoginForm from './components/LoginForm'
 import LogoutButton from './components/LogoutButton'
@@ -10,13 +9,13 @@ import Notification from './components/Notification'
 import { setNotification } from './reducers/notificationReducer'
 import { initializeBlogs } from './reducers/blogsReducer'
 import { getAllUsers } from './reducers/allUsersResucer'
+import { handleLogin, setAlreadyLogged, logout } from './reducers/loggedInUserReducer'
 
 
 const App = (props) => {
 
   const username = useField('text')
   const password = useField('password')
-  const [user, setUser] = useState(null)
 
   useEffect( () => {
 
@@ -33,50 +32,34 @@ const App = (props) => {
 
   }, [])
 
-
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
       blogService.setToken(user.token)
+      props.setAlreadyLogged(user)
     }
-  }, [])
+  },[])
 
-  const handleLogin = async (event) => {
+  const loginUser = async (event) => {
     event.preventDefault()
-
-    try {
-      const user = await loginService.login({
-        username: username.value, password: password.value,
-      })
-
-      window.localStorage.setItem(
-        'loggedBlogappUser', JSON.stringify(user)
-      )
-      setUser(user)
-      username.reset()
-      password.reset()
-      showMessage('Logged in')
-
-    } catch (exception) {
-      console.log('ERROR:', exception)
-      showMessage('Incorrect username or password', false)
-    }
+    props.handleLogin(username.value, password.value)
+    username.reset()
+    password.reset()
   }
 
   const showMessage = (message, successNotification=true) => {
     props.setNotification(message, successNotification)
   }
 
-  const handleLogout = () => {
-    window.localStorage.clear()
-    setUser(null)
+  const handleLogout = (event) => {
+    event.preventDefault()
+    props.logout()
   }
 
   const loginFormJSX = () => (
     <div>
-      {LoginForm(handleLogin, username, password)}
+      {LoginForm(loginUser, username, password)}
     </div>
   )
 
@@ -84,11 +67,11 @@ const App = (props) => {
     <>
       <div><Notification /></div>
       <h1>Blog List</h1>
-      {!user ? loginFormJSX() : 
+      {!props.loggedInUser ? loginFormJSX() : 
         <>
-          <div>{user.name} logged in</div>
+          <div>{props.loggedInUser.name} logged in</div>
           <div>{LogoutButton(handleLogout)}</div>
-          <AllBlogs allUsers={props.allUsers} user={user}/>
+          <AllBlogs allUsers={props.allUsers}/>
         </>}
     </>)
 
@@ -97,15 +80,18 @@ const App = (props) => {
 const mapStateToProps = (state) => {
   return {
     blogs: state.blogs,
-    allUsers: state.allUsers
+    allUsers: state.allUsers,
+    loggedInUser: state.loggedInUser,
   }
 }
 
 const mapDispatchToProps = {
   setNotification,
   initializeBlogs,
-  getAllUsers
+  getAllUsers,
+  handleLogin,
+  setAlreadyLogged,
+  logout
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
