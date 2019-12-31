@@ -1,12 +1,26 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import  { useField } from '../hooks'
+import { handleLogin } from '../reducers/loggedInUserReducer'
 
 //blogger1/kissakala
 //blogger2/kissakala
 
-const LoginForm = (handleLogin, username, password) => (
+const LoginForm = (props) => {
+  const username = useField('text')
+  const password = useField('password')
+
+  const loginUser = async (event) => {
+    event.preventDefault()
+    props.handleLogin(username.value, password.value)
+    username.reset()
+    password.reset()
+  }
+
+  return (
     <>
         <h2>Login</h2>
-        <form onSubmit={handleLogin}>
+        <form onSubmit={loginUser}>
           <div>
             Username:
             <input {...username.omitreset} /> 
@@ -20,4 +34,16 @@ const LoginForm = (handleLogin, username, password) => (
     </>
 )
 
-export default LoginForm
+}
+
+const mapStateToProps = (state) => {
+  return {
+    loggedInUser: state.loggedInUser,
+  }
+}
+
+const mapDispatchToProps = {
+  handleLogin,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm)

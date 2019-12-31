@@ -1,76 +1,47 @@
-import React, { useState, useEffect } from 'react'
-import { connect } from 'react-redux'
-import  { useField } from './hooks'
+import React, { useEffect } from 'react'
+import { connect, useDispatch } from 'react-redux'
 import blogService from './services/blogs'
 import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
 import LogoutButton from './components/LogoutButton'
 import Notification from './components/Notification'
-import { setNotification } from './reducers/notificationReducer'
 import { initializeBlogs } from './reducers/blogsReducer'
 import { getAllUsers } from './reducers/allUsersResucer'
-import { handleLogin, setAlreadyLogged, logout } from './reducers/loggedInUserReducer'
+import { setAlreadyLogged } from './reducers/loggedInUserReducer'
 
 
 const App = (props) => {
 
-  const username = useField('text')
-  const password = useField('password')
+  const dispatch = useDispatch()
 
   useEffect( () => {
-
     async function fetchData() {
-      await props.getAllUsers()
+      await dispatch(getAllUsers())
     }
-
     async function fetchBlogs() {
-      await props.initializeBlogs()
+      await dispatch(initializeBlogs())
     }
-
     fetchData()
     fetchBlogs()
-
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       blogService.setToken(user.token)
-      props.setAlreadyLogged(user)
+      dispatch(setAlreadyLogged(user))
     }
-  },[])
-
-  const loginUser = async (event) => {
-    event.preventDefault()
-    props.handleLogin(username.value, password.value)
-    username.reset()
-    password.reset()
-  }
-
-  const showMessage = (message, successNotification=true) => {
-    props.setNotification(message, successNotification)
-  }
-
-  const handleLogout = (event) => {
-    event.preventDefault()
-    props.logout()
-  }
-
-  const loginFormJSX = () => (
-    <div>
-      {LoginForm(loginUser, username, password)}
-    </div>
-  )
+  },[dispatch])
 
   return (
     <>
       <div><Notification /></div>
       <h1>Blog List</h1>
-      {!props.loggedInUser ? loginFormJSX() : 
+      {!props.loggedInUser ? <LoginForm/>: 
         <>
           <div>{props.loggedInUser.name} logged in</div>
-          <div>{LogoutButton(handleLogout)}</div>
+          <div><LogoutButton/></div>
           <BlogList allUsers={props.allUsers}/>
         </>}
     </>)
@@ -86,12 +57,9 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  setNotification,
   initializeBlogs,
   getAllUsers,
-  handleLogin,
   setAlreadyLogged,
-  logout
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
