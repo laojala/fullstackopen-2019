@@ -31,7 +31,7 @@ export const initializeBlogs = () => {
   }
 }
 
-//TODO: try-catch for services calls 
+//TODO: try-catch for services calls and add notifications here, not in the component
 
 export const addEntry = (data) => {
   return async dispatch => {

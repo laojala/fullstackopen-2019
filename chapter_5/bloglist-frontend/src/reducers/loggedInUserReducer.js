@@ -1,4 +1,6 @@
 import loginService from '../services/login'
+import { setNotification } from './notificationReducer'
+
 
 const loggedInUserReducer = (state = null, action) => {
 
@@ -24,13 +26,15 @@ export const handleLogin = (username, password) => {
         })
     
         window.localStorage.setItem(
-          'loggedBlogappUser', JSON.stringify(loggingUser)
+          'loggedBlogappUser', JSON.stringify(loggingUser)  
         )
-        //showMessage('Logged in')
+
+        dispatch(setNotification(`Logged in: ${username}`, true))
+        
     
       } catch (exception) {
         console.log('ERROR:', exception)
-        //showMessage('Incorrect username or password', false)
+        dispatch(setNotification('Incorrect username or password', false))
       }
       dispatch({
         type: 'LOGIN',
