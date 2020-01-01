@@ -1,5 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import {
+    BrowserRouter as Router,
+    Route, Link, Redirect, withRouter
+  } from 'react-router-dom'
 
 const Users = (props) => {
 
@@ -25,7 +29,7 @@ const Users = (props) => {
                             {props.allUsers.map((user, index) => (
                                 <tr key={index}>
                                     <td>
-                                    {user.name}
+                                    <Link to={`/users/${user.id}`}>{user.name}</Link>
                                     </td>
                                     <td>
                                     {countBlogs(user.id)}

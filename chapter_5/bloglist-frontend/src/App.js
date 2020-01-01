@@ -11,6 +11,7 @@ import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import Menu from './components/Menu'
 import Users from './components/Users'
+import User from './components/User'
 import { initializeBlogs } from './reducers/blogsReducer'
 import { getAllUsers } from './reducers/allUsersResucer'
 import { setAlreadyLogged } from './reducers/loggedInUserReducer'
@@ -40,7 +41,9 @@ const App = (props) => {
     }
   },[dispatch])
 
-//<Route exact path="/" render={() => <Home />} />
+  const userById = (id) =>
+    props.allUsers.find(user => user.id === id )
+
 
   return (
     <Router>
@@ -49,7 +52,10 @@ const App = (props) => {
         <>
           <Menu name={props.loggedInUser.name}/>
           <Route exact path="/" render={() => <BlogList allUsers={props.allUsers}/>} />
-          <Route exact path="/users" render={() => <Users />} />    
+          <Route exact path="/users" render={() => <Users />} />
+          <Route exact path="/users/:id" render={({ match }) =>
+            <User user={userById(match.params.id)} />
+    } />    
         </>}
     </Router>)
 
