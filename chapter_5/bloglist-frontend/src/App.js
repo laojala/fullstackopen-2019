@@ -13,7 +13,7 @@ import Menu from './components/Menu'
 import Users from './components/Users'
 import User from './components/User'
 import { initializeBlogs } from './reducers/blogsReducer'
-import { getAllUsers } from './reducers/allUsersResucer'
+import { getAllUsers } from './reducers/allUsersReducer'
 import { setAlreadyLogged } from './reducers/loggedInUserReducer'
 
 
@@ -36,10 +36,9 @@ const App = (props) => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      blogService.setToken(user.token)
-      dispatch(setAlreadyLogged(user))
+      props.setAlreadyLogged(user)
     }
-  },[dispatch])
+  },[])
 
   const userById = (id) =>
     props.allUsers.find(user => user.id === id )

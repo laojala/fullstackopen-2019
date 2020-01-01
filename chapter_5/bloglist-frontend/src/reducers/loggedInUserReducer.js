@@ -1,4 +1,5 @@
 import loginService from '../services/login'
+import blogService from '../services/blogs'
 import { setNotification } from './notificationReducer'
 
 
@@ -10,6 +11,7 @@ const loggedInUserReducer = (state = null, action) => {
     case 'ALREADY_LOGGED_IN':
       return action.data
     case 'LOGOUT':
+        console.log("logging out")
         return null
     default:
       return state
@@ -29,7 +31,9 @@ export const handleLogin = (username, password) => {
           'loggedBlogappUser', JSON.stringify(loggingUser)  
         )
 
-        dispatch(setNotification(`Logged in: ${username}`, true))
+        blogService.setToken(loggingUser.token)
+
+        dispatch(setNotification(`Logged in: ${loggingUser.name}`, true))
         
     
       } catch (exception) {
@@ -44,6 +48,7 @@ export const handleLogin = (username, password) => {
   }
 
   export const setAlreadyLogged = (user) => {
+    blogService.setToken(user.token)
     return dispatch => {
       dispatch({
         type: 'ALREADY_LOGGED_IN', 
@@ -55,6 +60,7 @@ export const handleLogin = (username, password) => {
 
   export const logout = () => {
     window.localStorage.clear()
+    blogService.removeToken()
     return {
       type: 'LOGOUT', 
       data: [],
