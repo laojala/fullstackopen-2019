@@ -3,6 +3,10 @@ import { connect } from 'react-redux'
 
 const Users = (props) => {
 
+    const countBlogs = (userId) => {
+        return props.blogs.filter(blog => blog.user === userId).length
+    }
+
     if (props.allUsers.length === 0)
         return <div>loading users</div>
 
@@ -24,7 +28,7 @@ const Users = (props) => {
                                     {user.name}
                                     </td>
                                     <td>
-                                    {user.blogs.length}
+                                    {countBlogs(user.id)}
                                     </td>
                                 </tr>
                                 ))}
@@ -37,6 +41,7 @@ const Users = (props) => {
   const mapStateToProps = (state) => {
     return {
       allUsers: state.allUsers,
+      blogs: state.blogs,
     }
   }
   
