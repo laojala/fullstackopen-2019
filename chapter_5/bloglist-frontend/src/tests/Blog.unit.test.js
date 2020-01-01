@@ -1,5 +1,6 @@
 import React from 'react'
 import { render, cleanup, fireEvent } from '@testing-library/react'
+import { MemoryRouter as Router } from 'react-router-dom'
 import 'jest-dom/extend-expect'
 //simport { prettyDOM } from 'dom-testing-library'
 import Blog from '../components/Blog'
@@ -32,12 +33,14 @@ const mockHandler2 = jest.fn()
 test('only name and author are visible when blog is rendered', async () => {
 
   const component = render(
+    <Router>
     <Blog
       blog={blog}
       users={users}
       user={users[0]}
       handleNewLike={mockHandler}
       removeBlog={mockHandler2} />
+      </Router>
   )
 
   const title = component.container.querySelector('[data-testid="always_visible"]')
@@ -53,12 +56,14 @@ test('only name and author are visible when blog is rendered', async () => {
 test('details become visible when title row is clicked', async () => {
 
   const component = render(
+    <Router>
     <Blog
       blog={blog}
       users={users}
       user={users[0]}
       handleNewLike={mockHandler}
       removeBlog={mockHandler2} />
+      </Router>
   )
 
   const title = component.container.querySelector(sel('always_visible'))
