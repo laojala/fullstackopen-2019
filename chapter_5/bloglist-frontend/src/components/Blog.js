@@ -1,5 +1,9 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+import {
+  BrowserRouter as Router,
+  Route, Link, Redirect, withRouter
+} from 'react-router-dom'
 
 const Blog = ({ blog, users, user, handleNewLike, removeBlog }) => {
   const [visible, setVisible] = useState(false)
@@ -37,7 +41,7 @@ const Blog = ({ blog, users, user, handleNewLike, removeBlog }) => {
   return (
     <div style={blogStyle}>
       <div onClick={toggleVisibility} data-testid="always_visible">
-        {blog.title} {blog.author}
+        <Link to={`/blogs/${blog.id}`}>{blog.title} </Link>{blog.author}
       </div>
       <div style={showWhenVisible} data-testid="toggleable">
         <div><a href={blog.url} target="_blank" rel="noopener noreferrer">{blog.url}</a></div>

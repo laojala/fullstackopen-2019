@@ -7,6 +7,7 @@ import {
 
 import blogService from './services/blogs'
 import BlogList from './components/BlogList'
+import BlogDetails from './components/BlogDetails'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import Menu from './components/Menu'
@@ -41,8 +42,10 @@ const App = (props) => {
   },[])
 
   const userById = (id) =>
-    props.allUsers.find(user => user.id === id )
+    props.allUsers.find(user => user.id === id)
 
+  const blogById = (id) =>
+    props.blogs.find(blog => blog.id === id)
 
   return (
     <Router>
@@ -53,8 +56,9 @@ const App = (props) => {
           <Route exact path="/" render={() => <BlogList allUsers={props.allUsers}/>} />
           <Route exact path="/users" render={() => <Users />} />
           <Route exact path="/users/:id" render={({ match }) =>
-            <User user={userById(match.params.id)} />
-    } />    
+            <User user={userById(match.params.id)} />} />
+          <Route exact path="/blogs/:id" render={({ match }) =>
+            <BlogDetails blog={blogById(match.params.id)} />} /> 
         </>}
     </Router>)
 

@@ -3,8 +3,6 @@ import { connect } from 'react-redux'
 
 const User = (props) => {
 
-    console.log('IN USER', props)
-
     const showBlog = (blog) => {
         if (blog.user === props.user.id)
             return <li>{blog.title}</li>
