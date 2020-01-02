@@ -3,11 +3,25 @@ import { connect } from 'react-redux'
 import { handleLike } from '../reducers/blogsReducer'
 
 const BlogDetails = (props) => {
-
-    console.log("PROPSIT", props)
     
     const findBlogFromState = (id) =>
         props.blogs.find(item => item.id === id)
+
+    const comments = (blog) => {
+      if (blog.comments.length === 0)
+        return null
+      else
+        return (
+        <div>
+          <h3>comments:</h3>
+          <ul>
+            {blog.comments.map((comment, index) => (
+              <li key={index}>{comment}</li>
+            ))}
+        </ul>
+        </div>
+        )
+    }
 
     if (!props.blog) { 
       return null
@@ -28,6 +42,7 @@ const BlogDetails = (props) => {
             <div>
                 author: {currentBlog.author}
             </div>
+            {comments(currentBlog)}
           </div>
         )
     }
