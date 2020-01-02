@@ -16,6 +16,11 @@ const blogsReducer = (state = [], action) => {
       return state.filter(item => action.data !== item.id ).sort((a, b) => b.likes - a.likes)
     case 'DO_NOTHING':
       return state
+    case 'ADD_COMMENT':
+      const commentedBlog = state.find(blog => blog.id === action.data.id)
+      commentedBlog.comments.push(action.data.comment)
+      const stateToBeReturned =  state.map(item => item.id === action.data.id ? commentedBlog : item)
+      return stateToBeReturned.filter(item => action.data !== item.id ).sort((a, b) => b.likes - a.likes)
     default: 
       return state
   }
@@ -67,6 +72,16 @@ export const handleLike = (id) => {
     dispatch({
       type: 'LIKE_BLOG',
       data: { id }
+    })
+  }
+}
+
+export const postComment = (data) => {
+  return async (dispatch, getState) => {
+    await blogService.addComment(data)
+    dispatch({
+      type: 'ADD_COMMENT',
+      data: data
     })
   }
 }

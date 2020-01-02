@@ -11,12 +11,12 @@ const AddBlog = (addEntry, title, handleNewTitle, author, handleNewAuthor, url, 
         <br/>
         <label>
           Author:
-          <input value={author}onChange={handleNewAuthor} />
+          <input value={author} onChange={handleNewAuthor} />
         </label>
         <br/>
         <label>
           Url:
-          <input value={url}onChange={handleNewUrl} />
+          <input value={url} onChange={handleNewUrl} />
         </label>
         <br/>
         <div>
