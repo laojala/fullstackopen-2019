@@ -14,14 +14,6 @@ const tokenExtractor = (request, response, next) => {
   next()
 }
 
-// const getTokenFrom = request => {
-//   
-//   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-//     return authorization.substring(7)
-//   }
-//   return null
-// }
-
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }

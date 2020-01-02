@@ -37,7 +37,8 @@ blogsRouter.post('/', async (request, response , next) => {
       author: body.author,
       likes: body.likes,
       url: body.url,
-      user: user._id
+      user: user._id,
+      comments: []
     })
 
     const savedBlog = await blog.save()
@@ -100,5 +101,32 @@ blogsRouter.put('/:id', async (request, response, next) => {
     })
     .catch(error => next(error))
 })
+
+blogsRouter.post('/:id/comments', async (request, response , next) => {
+
+  const token = request.token
+
+  try {
+    const decodedToken = jwt.verify(token, process.env.SECRET)
+    if (!token || !decodedToken.id) {
+      return response.status(401).json({ error: 'token missing or invalid' })
+    }
+ 
+    const blogToBeUpdated = await Blog.findById(request.params.id)
+    blogToBeUpdated.comments.push(request.body.comment)
+
+    Blog.findByIdAndUpdate(request.params.id, blogToBeUpdated, { new: true })
+      .then(updatedNote => {
+        response.json(updatedNote.toJSON())
+      })
+      .catch(error => next(error))
+
+  } catch (exception) {
+    next(exception)
+  }
+
+})
+
+  
 
 module.exports = blogsRouter
