@@ -1,28 +1,30 @@
 import blogService from '../services/blogs'
 
 const blogsReducer = (state = [], action) => {
-  
+
   switch (action.type) {
-    case 'LIKE_BLOG':
-      const likedBlog = state.find(blog => blog.id === action.data.id)
-      likedBlog.likes++
-      const newState =  state.map(item => item.id === action.data.id ? likedBlog : item)
-      return newState.sort((a, b) => b.likes - a.likes)
-    case 'INIT_BLOGS':
-      return action.data.sort((a, b) => b.likes - a.likes)
-    case 'ADD_BLOG':
-      return [...state, action.data].sort((a, b) => b.likes - a.likes)
-    case 'REMOVE_BLOG':
-      return state.filter(item => action.data !== item.id ).sort((a, b) => b.likes - a.likes)
-    case 'DO_NOTHING':
-      return state
-    case 'ADD_COMMENT':
-      const commentedBlog = state.find(blog => blog.id === action.data.id)
-      commentedBlog.comments.push(action.data.comment)
-      const stateToBeReturned =  state.map(item => item.id === action.data.id ? commentedBlog : item)
-      return stateToBeReturned.filter(item => action.data !== item.id ).sort((a, b) => b.likes - a.likes)
-    default: 
-      return state
+  case 'LIKE_BLOG': {
+    const likedBlog = state.find(blog => blog.id === action.data.id)
+    likedBlog.likes++
+    const newState =  state.map(item => item.id === action.data.id ? likedBlog : item)
+    return newState.sort((a, b) => b.likes - a.likes)
+  }
+  case 'INIT_BLOGS':
+    return action.data.sort((a, b) => b.likes - a.likes)
+  case 'ADD_BLOG':
+    return [...state, action.data].sort((a, b) => b.likes - a.likes)
+  case 'REMOVE_BLOG':
+    return state.filter(item => action.data !== item.id ).sort((a, b) => b.likes - a.likes)
+  case 'DO_NOTHING':
+    return state
+  case 'ADD_COMMENT': {
+    const commentedBlog = state.find(blog => blog.id === action.data.id)
+    commentedBlog.comments.push(action.data.comment)
+    const stateToBeReturned =  state.map(item => item.id === action.data.id ? commentedBlog : item)
+    return stateToBeReturned.filter(item => action.data !== item.id ).sort((a, b) => b.likes - a.likes)
+  }
+  default:
+    return state
   }
 }
 
@@ -42,7 +44,7 @@ export const addEntry = (data) => {
   return async dispatch => {
     const newBlog = await blogService.create(data)
     dispatch({
-      type: "ADD_BLOG",
+      type: 'ADD_BLOG',
       data: newBlog,
     })
   }
@@ -53,14 +55,14 @@ export const removeBlog = (blog) => {
     return async dispatch => {
       await blogService.remove(blog.id)
       dispatch({
-        type: "REMOVE_BLOG",
+        type: 'REMOVE_BLOG',
         data: blog.id,
       })
     }
   }
-  else 
+  else
     return {
-    type: 'DO NOTHING', 
+      type: 'DO NOTHING',
     }
 
 }

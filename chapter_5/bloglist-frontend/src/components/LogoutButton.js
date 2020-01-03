@@ -7,7 +7,7 @@ const LogoutButton = (props) => {
   const handleLogout = () => {
     props.logout()
   }
-  
+
   return (
     <>
       <button type="submit" onClick={handleLogout}>Logout</button>

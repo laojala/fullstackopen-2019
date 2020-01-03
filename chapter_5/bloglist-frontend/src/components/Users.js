@@ -3,49 +3,49 @@ import { connect } from 'react-redux'
 import { BrowserRouter as Router,Link } from 'react-router-dom'
 const Users = (props) => {
 
-    const countBlogs = (userId) => {
-        return props.blogs.filter(blog => blog.user === userId).length
-    }
+  const countBlogs = (userId) => {
+    return props.blogs.filter(blog => blog.user === userId).length
+  }
 
-    if (props.allUsers.length === 0)
-        return <div>loading users</div>
+  if (props.allUsers.length === 0)
+    return <div>loading users</div>
 
-    else
-        return (
+  else
+    return (
             <>
                 <h2>User data</h2>
                 <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Blogs created</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                            {props.allUsers.map((user, index) => (
-                                <tr key={index}>
-                                    <td>
-                                    <Link to={`/users/${user.id}`}>{user.name}</Link>
-                                    </td>
-                                    <td>
-                                    {countBlogs(user.id)}
-                                    </td>
-                                </tr>
-                                ))}
-                   </tbody>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Blogs created</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {props.allUsers.map((user, index) => (
+                      <tr key={index}>
+                        <td>
+                          <Link to={`/users/${user.id}`}>{user.name}</Link>
+                        </td>
+                        <td>
+                          {countBlogs(user.id)}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
                 </table>
         </>
-        )
-  }
+    )
+}
 
-  const mapStateToProps = (state) => {
-    return {
-      allUsers: state.allUsers,
-      blogs: state.blogs,
-    }
+const mapStateToProps = (state) => {
+  return {
+    allUsers: state.allUsers,
+    blogs: state.blogs,
   }
-  
-  const mapDispatchToProps = {
-  }
+}
+
+const mapDispatchToProps = {
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Users)

@@ -34,13 +34,13 @@ test('only name and author are visible when blog is rendered', async () => {
 
   const component = render(
     <Router>
-    <Blog
-      blog={blog}
-      users={users}
-      user={users[0]}
-      handleNewLike={mockHandler}
-      removeBlog={mockHandler2} />
-      </Router>
+      <Blog
+        blog={blog}
+        users={users}
+        user={users[0]}
+        handleNewLike={mockHandler}
+        removeBlog={mockHandler2} />
+    </Router>
   )
 
   const title = component.container.querySelector('[data-testid="always_visible"]')
@@ -57,13 +57,13 @@ test('details become visible when title row is clicked', async () => {
 
   const component = render(
     <Router>
-    <Blog
-      blog={blog}
-      users={users}
-      user={users[0]}
-      handleNewLike={mockHandler}
-      removeBlog={mockHandler2} />
-      </Router>
+      <Blog
+        blog={blog}
+        users={users}
+        user={users[0]}
+        handleNewLike={mockHandler}
+        removeBlog={mockHandler2} />
+    </Router>
   )
 
   const title = component.container.querySelector(sel('always_visible'))

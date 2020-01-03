@@ -45,7 +45,7 @@ const App = (props) => {
   return (
     <Router>
       <div><Notification /></div>
-      {!props.loggedInUser ? <LoginForm/>: 
+      {!props.loggedInUser ? <LoginForm/>:
         <>
           <Menu name={props.loggedInUser.name}/>
           <Route exact path="/" render={() => <BlogList allUsers={props.allUsers}/>} />
@@ -53,7 +53,7 @@ const App = (props) => {
           <Route exact path="/users/:id" render={({ match }) =>
             <User user={userById(match.params.id)} />} />
           <Route exact path="/blogs/:id" render={({ match }) =>
-            <BlogDetails blog={blogById(match.params.id)} />} /> 
+            <BlogDetails blog={blogById(match.params.id)} />} />
         </>}
     </Router>)
 

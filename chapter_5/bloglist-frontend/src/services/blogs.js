@@ -9,7 +9,7 @@ const setToken = newToken => {
 }
 
 const removeToken = () => {
-  console.log("removing token in service")
+  console.log('removing token in service')
   token = null
 }
 

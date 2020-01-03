@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { handleLike } from '../reducers/blogsReducer'
-import { postComment} from '../reducers/blogsReducer'
+import { postComment } from '../reducers/blogsReducer'
 
 const BlogDetails = (props) => {
 
-  const [commentText, setCommentText] = useState("")
+  const [commentText, setCommentText] = useState('')
 
   const setNewComment = (event) => {
     setCommentText(event.target.value)
@@ -22,52 +22,52 @@ const BlogDetails = (props) => {
   }
 
   const findBlogFromState = (id) =>
-      props.blogs.find(item => item.id === id)
+    props.blogs.find(item => item.id === id)
 
   const comments = (blog) => {
     if (blog.comments.length === 0)
       return null
     else
       return (
-      <div>
-        <ul>
-          {blog.comments.map((comment, index) => (
-            <li key={index}>{comment}</li>
-          ))}
-      </ul>
-      </div>
+        <div>
+          <ul>
+            {blog.comments.map((comment, index) => (
+              <li key={index}>{comment}</li>
+            ))}
+          </ul>
+        </div>
       )
   }
 
-  if (!props.blog) { 
+  if (!props.blog) {
     return null
   }
   else {
-      const currentBlog = findBlogFromState(props.blog.id)
+    const currentBlog = findBlogFromState(props.blog.id)
 
-      return (
+    return (
+      <div>
+        <h2>{currentBlog.title}</h2>
         <div>
-          <h2>{currentBlog.title}</h2>
-          <div>
-              <a href="currentBlog.url">{currentBlog.url}</a>
-          </div>
-          <div>
-              {currentBlog.likes} likes
-              <button onClick={() => props.handleLike(currentBlog.id)}>like</button>
-          </div>
-          <div>
-              author: {currentBlog.author}
-          </div>
-          <h3>comments:</h3>
-          <div>
-            <form onSubmit={addComment}>
-              <input value={commentText} onChange={setNewComment} /> 
-              <button type="Submit">Add comment</button>
-            </form>
-          </div>
-          <div>{comments(currentBlog)}</div>
+          <a href="currentBlog.url">{currentBlog.url}</a>
         </div>
-      )
+        <div>
+          {currentBlog.likes} likes
+          <button onClick={() => props.handleLike(currentBlog.id)}>like</button>
+        </div>
+        <div>
+              author: {currentBlog.author}
+        </div>
+        <h3>comments:</h3>
+        <div>
+          <form onSubmit={addComment}>
+            <input value={commentText} onChange={setNewComment} />
+            <button type="Submit">Add comment</button>
+          </form>
+        </div>
+        <div>{comments(currentBlog)}</div>
+      </div>
+    )
   }
 }
 

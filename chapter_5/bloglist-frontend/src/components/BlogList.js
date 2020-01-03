@@ -45,13 +45,13 @@ const BlogList = (props) => {
   }
 
   const removeBlogEntry = (blog) => {
-      props.removeBlog(blog)
-      props.setNotification(`Blog "${blog.title}" removed`, true)
+    props.removeBlog(blog)
+    props.setNotification(`Blog "${blog.title}" removed`, true)
   }
 
   if (props.allUsers.length === 0 || props.loggedUser.length === 0)
     return (<>
-      {console.log("Loading users...")}
+      {console.log('Loading users...')}
       <div>Loading users...</div></>
     )
   else
@@ -75,24 +75,24 @@ const BlogList = (props) => {
       </div>
       </>
     )
+}
+
+const blogsInOrder = ({ blogs }) => {
+  return blogs.sort((a, b) => b.likes - a.likes)
+}
+
+const mapStateToProps = (state) => {
+  return {
+    blogs: blogsInOrder(state),
+    loggedUser: state.loggedInUser
   }
-  
-  const blogsInOrder = ({ blogs }) => {
-    return blogs.sort((a, b) => b.likes - a.likes)
-  }
-  
-  const mapStateToProps = (state) => {
-    return {
-      blogs: blogsInOrder(state),
-      loggedUser: state.loggedInUser
-    }
-  }
-  
-  const mapDispatchToProps = {
-    setNotification,
-    handleLike,
-    addEntry,
-    removeBlog
-  }
+}
+
+const mapDispatchToProps = {
+  setNotification,
+  handleLike,
+  addEntry,
+  removeBlog
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(BlogList)

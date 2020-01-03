@@ -1,12 +1,10 @@
 module.exports = {
   "env": {
       "browser": true,
-      "es6": true,
-      "jest/globals": true
+      "es6": true
   },
   "extends": [ 
-      "eslint:recommended",
-      "plugin:react/recommended"
+    "eslint:recommended" 
   ],
   "parserOptions": {
       "ecmaFeatures": {
@@ -15,12 +13,13 @@ module.exports = {
       "ecmaVersion": 2018,
       "sourceType": "module"
   },
-  "plugins": [
-      "react", "jest",
-      "react-hooks"
-  ],
+  "settings": {
+    "react": {
+        "pragma": "React",
+        "version": "16.9"
+    }
+},
   "rules": {
-      "react-hooks/rules-of-hooks": "error",
       "indent": [
           "warn",
           2
@@ -47,6 +46,11 @@ module.exports = {
       ],
       "no-console": 0,
       "react/prop-types": 0,
-      "no-unused-vars": ["warn", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }]
+      "no-unused-vars": ["off", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }],
+      "react/jsx-uses-vars": 0,
+      "react/react-in-jsx-scope": 0,
+      "react/no-unescaped-entities": 0,
+      "react/display-name": 0
   }
-};
+  
+}
