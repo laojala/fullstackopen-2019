@@ -6,7 +6,7 @@ import BlogList from './components/BlogList'
 import BlogDetails from './components/BlogDetails'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
-import Menu from './components/Menu'
+import MenuComponent from './components/MenuComponent'
 import Users from './components/Users'
 import User from './components/User'
 import { initializeBlogs } from './reducers/blogsReducer'
@@ -49,7 +49,7 @@ const App = (props) => {
         <div><Notification /></div>
         {!props.loggedInUser ? <LoginForm/>:
         <>
-          <Menu name={props.loggedInUser.name}/>
+          <MenuComponent name={props.loggedInUser.name}/>
           <Route exact path="/" render={() => <BlogList allUsers={props.allUsers}/>} />
           <Route exact path="/users" render={() => <Users />} />
           <Route exact path="/users/:id" render={({ match }) =>
