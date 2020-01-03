@@ -6,21 +6,21 @@ const AddBlog = (addEntry, title, handleNewTitle, author, handleNewAuthor, url, 
       <form onSubmit={addEntry}>
         <label>
           Title:
-          <input value={title} onChange={handleNewTitle} />
+          <input value={title} onChange={handleNewTitle} data-testid="title"/>
         </label>
         <br/>
         <label>
           Author:
-          <input value={author} onChange={handleNewAuthor} />
+          <input value={author} onChange={handleNewAuthor} data-testid="author"/>
         </label>
         <br/>
         <label>
           Url:
-          <input value={url} onChange={handleNewUrl} />
+          <input value={url} onChange={handleNewUrl} data-testid="url"/>
         </label>
         <br/>
         <div>
-          <button type="submit">Add new</button>
+          <button type="submit" data-testid="submit_blog">Add new</button>
         </div>
       </form>
     </>

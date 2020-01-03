@@ -3,12 +3,11 @@ import { connect } from 'react-redux'
 import  { useField } from '../hooks'
 import { handleLogin } from '../reducers/loggedInUserReducer'
 
-//blogger1/kissakala
-//blogger2/kissakala
-
 const LoginForm = (props) => {
   const username = useField('text')
   const password = useField('password')
+
+  //jokunen/salainen
 
   const loginUser = async (event) => {
     event.preventDefault()

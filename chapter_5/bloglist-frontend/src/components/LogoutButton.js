@@ -10,7 +10,7 @@ const LogoutButton = (props) => {
 
   return (
     <>
-      <button type="submit" onClick={handleLogout}>Logout</button>
+      <button type="submit" onClick={handleLogout} data-testid="logout_btn">Logout</button>
     </>
   )
 }

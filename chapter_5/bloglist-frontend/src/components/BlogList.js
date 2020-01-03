@@ -70,7 +70,7 @@ const BlogList = (props) => {
             users={props.allUsers}
             user={props.loggedUser}
             handleNewLike={() => props.handleLike(blog.id)}
-            removeBlog = {() => removeBlogEntry(blog)} 
+            removeBlog = {() => removeBlogEntry(blog)}
             index = {index}/>
         )}
       </div>
