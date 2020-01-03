@@ -1,6 +1,48 @@
 describe('Blog ', function() {
-    it('front page can be opened', function() {
-      cy.visit('http://localhost:3000')
-      cy.contains('Login')
-    })
+
+  it('user sees their name after succesfull login', function() {
+    cy.visit('http://localhost:3000')
+    cy.get('[data-testid=username]')
+      .type('blogger1')
+    cy.get('[data-testid=password]')
+      .type('kissakala')
+    cy.contains('Keen Blogger').should('not.exist')
+    cy.get('[data-testid=submitlogin]')
+      .click()
+    cy.contains('Logged in: Keen Blogger')
   })
+  it('user sees notification for wrong username', function() {
+    cy.visit('http://localhost:3000')
+    cy.get('[data-testid=username]')
+      .type('blogger11')
+    cy.get('[data-testid=password]')
+      .type('kissakala')
+    cy.contains('Incorrect username or password').should('not.exist')
+    cy.get('[data-testid=submitlogin]')
+      .click()
+    cy.contains('Keen Blogger').should('not.exist')
+    cy.contains('Incorrect username or password')
+  })
+  it('user can like a blog and likes increase', function() {
+    cy.visit('http://localhost:3000')
+    cy.get('[data-testid=username]')
+      .type('blogger1')
+    cy.get('[data-testid=password]')
+      .type('kissakala')
+    cy.get('[data-testid=submitlogin]')
+      .click()
+    cy.get('[data-testid="0"] > div span[data-testid="author"]')
+      .click()
+    cy.get('[data-testid="0"] > div:nth-child(2) > div span[data-testid="likes"]').invoke('text').then(($likes) => {
+      cy.log("number_before:", $likes)
+      cy.get('[data-testid="0"] > div:nth-child(2) > div button[data-testid="like_btn"]')
+        .click()
+      cy.get('[data-testid="0"] > div:nth-child(2) > div span[data-testid="likes"]').contains(Number($likes)+1)
+      //wait is not nice here, but will do for now cy.wait(1000)
+      cy.get('[data-testid="0"] > div:nth-child(2) > div span[data-testid="likes"]').invoke('text').then((str) => Number(str))
+        .should("eq", Number($likes)+1)
+    })
+    
+  })
+
+})

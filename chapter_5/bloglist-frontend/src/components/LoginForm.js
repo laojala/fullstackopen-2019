@@ -23,13 +23,13 @@ const LoginForm = (props) => {
         <form onSubmit={loginUser}>
           <div>
             Username:
-            <input {...username.omitreset} />
+            <input data-testid="username" {...username.omitreset} />
           </div>
           <div>
             Password:
-            <input {...password.omitreset} />
+            <input data-testid="password" {...password.omitreset} />
           </div>
-          <button type="submit">Login</button>
+          <button data-testid="submitlogin" type="submit">Login</button>
         </form>
     </>
   )

@@ -63,14 +63,15 @@ const BlogList = (props) => {
       </Togglable>
       <br/>
       <div>
-        {props.blogs.map(blog =>
+        {props.blogs.map((blog, index) =>
           <Blog
             key={blog.id}
             blog={blog}
             users={props.allUsers}
             user={props.loggedUser}
             handleNewLike={() => props.handleLike(blog.id)}
-            removeBlog = {() => removeBlogEntry(blog)} />
+            removeBlog = {() => removeBlogEntry(blog)} 
+            index = {index}/>
         )}
       </div>
       </>

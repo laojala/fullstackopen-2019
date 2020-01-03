@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { BrowserRouter as Router,Link } from 'react-router-dom'
 
-const Blog = ({ blog, users, user, handleNewLike, removeBlog }) => {
+const Blog = ({ blog, users, user, handleNewLike, removeBlog, index }) => {
   const [visible, setVisible] = useState(false)
 
   const showWhenVisible = { display: visible ? '' : 'none' }
@@ -36,15 +36,15 @@ const Blog = ({ blog, users, user, handleNewLike, removeBlog }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} data-testid={index}>
       <div onClick={toggleVisibility} data-testid="always_visible">
-        <Link to={`/blogs/${blog.id}`}>{blog.title} </Link>{blog.author}
+  <Link to={`/blogs/${blog.id}`}>{blog.title}</Link> <span data-testid="author">{blog.author}</span>
       </div>
       <div style={showWhenVisible} data-testid="toggleable">
         <div><a href={blog.url} target="_blank" rel="noopener noreferrer">{blog.url}</a></div>
         <div>
-          {blog.likes} likes
-          <button style={buttonStyle} onClick={handleNewLike}>like</button>
+          <span data-testid="likes">{blog.likes}</span> likes
+          <button data-testid="like_btn" style={buttonStyle} onClick={handleNewLike}>like</button>
         </div>
         <div>Added by: {userForBlog()}</div>
         <div>{displayRemoveForUserWhoAdded()}</div>
