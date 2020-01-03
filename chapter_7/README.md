@@ -17,7 +17,7 @@ Commits for these are in chapter_4 and chapter_5 files
 - [x] 7.13 Styles, step1
 - [x] 7.14 Styles, step2
 - [x] 7.15 ESLint
-- [ ] 7.16 Implement a suitable webpack configuration for your application from scratch.
+- [x] 7.16 Implement a suitable webpack configuration for your application from scratch.
 - [x] 7.17 End to end testing, step1
 - [x] 7.18 End to end testing, step2
 - [x] 7.19 End to end testing, step3
