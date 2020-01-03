@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { handleLike } from '../reducers/blogsReducer'
-import { checkPropTypes } from 'prop-types'
 import { postComment} from '../reducers/blogsReducer'
 
 const BlogDetails = (props) => {

@@ -1,8 +1,5 @@
 import React from 'react'
-import {
-    BrowserRouter as Router,
-    Route, Link, Redirect, withRouter
-  } from 'react-router-dom'
+import { BrowserRouter as Router, Link } from 'react-router-dom'
 import LogoutButton from './LogoutButton'
 
 const Menu = (props) => {

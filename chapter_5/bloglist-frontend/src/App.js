@@ -1,11 +1,6 @@
 import React, { useEffect } from 'react'
 import { connect, useDispatch } from 'react-redux'
-import {
-  BrowserRouter as Router,
-  Route, Link, Redirect, withRouter
-} from 'react-router-dom'
-
-import blogService from './services/blogs'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import BlogList from './components/BlogList'
 import BlogDetails from './components/BlogDetails'
 import LoginForm from './components/LoginForm'

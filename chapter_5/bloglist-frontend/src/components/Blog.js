@@ -1,9 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import {
-  BrowserRouter as Router,
-  Route, Link, Redirect, withRouter
-} from 'react-router-dom'
+import { BrowserRouter as Router,Link } from 'react-router-dom'
 
 const Blog = ({ blog, users, user, handleNewLike, removeBlog }) => {
   const [visible, setVisible] = useState(false)
