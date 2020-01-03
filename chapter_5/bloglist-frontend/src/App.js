@@ -1,3 +1,4 @@
+import { Container } from 'semantic-ui-react'
 import React, { useEffect } from 'react'
 import { connect, useDispatch } from 'react-redux'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
@@ -43,9 +44,10 @@ const App = (props) => {
     props.blogs.find(blog => blog.id === id)
 
   return (
-    <Router>
-      <div><Notification /></div>
-      {!props.loggedInUser ? <LoginForm/>:
+    <Container>
+      <Router>
+        <div><Notification /></div>
+        {!props.loggedInUser ? <LoginForm/>:
         <>
           <Menu name={props.loggedInUser.name}/>
           <Route exact path="/" render={() => <BlogList allUsers={props.allUsers}/>} />
@@ -55,7 +57,9 @@ const App = (props) => {
           <Route exact path="/blogs/:id" render={({ match }) =>
             <BlogDetails blog={blogById(match.params.id)} />} />
         </>}
-    </Router>)
+      </Router>
+    </Container>
+  )
 
 }
 
